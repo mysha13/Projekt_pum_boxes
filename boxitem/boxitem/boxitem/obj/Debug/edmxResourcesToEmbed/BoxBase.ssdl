@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BoxesModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="BoxesModelStoreContainer">
+    <EntitySet Name="Boxes" EntityType="BoxesModel.Store.Boxes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Items" EntityType="BoxesModel.Store.Items" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="BoxesModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="UsersBoxes" Association="BoxesModel.Store.UsersBoxes">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Boxes" EntitySet="Boxes" />
+    </AssociationSet>
+    <AssociationSet Name="BoxesItems" Association="BoxesModel.Store.BoxesItems">
+      <End Role="Boxes" EntitySet="Boxes" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Boxes">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="BoxID" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Number" Type="int" Nullable="true" />
+    <Property Name="Description" Type="varchar(max)" Nullable="true" />
+    <Property Name="BoxID" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Picture" Type="varbinary(max)" Nullable="true" />
+    <Property Name="Users_UserId" Type="int" Nullable="false" />
+    <Property Name="Users_Login" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Users_Name" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Users_Surname" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Items">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="ItemId" />
+      <PropertyRef Name="BoxId" />
+    </Key>
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Number" Type="int" Nullable="true" />
+    <Property Name="Description" Type="varchar(max)" Nullable="true" />
+    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="BoxId" Type="int" Nullable="false" />
+    <Property Name="Picture" Type="varbinary(max)" Nullable="true" />
+    <Property Name="Boxes_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Boxes_BoxID" Type="int" Nullable="false" />
+    <Property Name="Boxes_UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="Login" />
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="Surname" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Login" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="Password" Type="nchar" Nullable="false" MaxLength="20" />
+    <Property Name="Name" Type="nchar" Nullable="false" MaxLength="10" />
+    <Property Name="Surname" Type="nchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <Association Name="UsersBoxes">
+    <End Role="Users" Type="BoxesModel.Store.Users" Multiplicity="1" />
+    <End Role="Boxes" Type="BoxesModel.Store.Boxes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+        <PropertyRef Name="Login" />
+        <PropertyRef Name="Name" />
+        <PropertyRef Name="Surname" />
+      </Principal>
+      <Dependent Role="Boxes">
+        <PropertyRef Name="Users_UserId" />
+        <PropertyRef Name="Users_Login" />
+        <PropertyRef Name="Users_Name" />
+        <PropertyRef Name="Users_Surname" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BoxesItems">
+    <End Role="Boxes" Type="BoxesModel.Store.Boxes" Multiplicity="1" />
+    <End Role="Items" Type="BoxesModel.Store.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Boxes">
+        <PropertyRef Name="Name" />
+        <PropertyRef Name="BoxID" />
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="Boxes_Name" />
+        <PropertyRef Name="Boxes_BoxID" />
+        <PropertyRef Name="Boxes_UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

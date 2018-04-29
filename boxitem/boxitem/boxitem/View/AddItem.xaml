@@ -1,0 +1,35 @@
+﻿<Window x:Class="boxitem.AddItem"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:boxitem"
+        mc:Ignorable="d"
+        Title="Dodaj przedmiot" Height="400.341" Width="250.36">
+    <Grid>
+        <TextBox x:Name="tbNameAddItem"  TextAlignment="Center"  HorizontalAlignment="Left" Height="27" Margin="28,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" FontSize="16" FontFamily="Arial" Background="{x:Null}" Foreground="#FF787878"/>
+        <TextBox x:Name="tbNumberAddItem"   TextAlignment="Center"  HorizontalAlignment="Left" Height="27" Margin="28,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" FontSize="16" FontFamily="Arial" Background="{x:Null}" Foreground="#FF787878"/>
+        <RichTextBox x:Name="richTextBox" HorizontalAlignment="Left" Height="100" Margin="28,161,0,0" VerticalAlignment="Top" Width="182" Foreground="#FF787878" FontFamily="Arial" FontSize="16" Block.TextAlignment="Center">
+            <FlowDocument>
+                <Paragraph TextAlignment="Center">
+                    <Run x:Name="rtbDescripAddItem" />
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Button x:Name="btnCancelAddItem" Content="Anuluj" HorizontalAlignment="Left" Margin="74,327,0,0" VerticalAlignment="Top" Width="96" Height="34" FontSize="16" FontFamily="Arial" FontWeight="Bold" Click="btnCancelAddItem_Click"/>
+        <Button x:Name="btnOkAddItem" Content="Ok" HorizontalAlignment="Left" Margin="74,275,0,0" VerticalAlignment="Top" Width="96" Height="34" FontSize="16" FontFamily="Arial" FontWeight="Bold"/>
+        <Label   Content="Nazwa:" Margin="92,5,72,0" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Height="28"/>
+        <Label   Content="Liczba rzeczy" Margin="72,66,68,0" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Height="28" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.321"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label   Content="Opis:" Margin="101,133,84,0" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Height="28"/>
+
+    </Grid>
+</Window>

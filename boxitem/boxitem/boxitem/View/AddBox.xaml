@@ -1,0 +1,30 @@
+﻿<Window x:Class="boxitem.AddBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:boxitem"
+        mc:Ignorable="d"
+        Title="Dodaj pudełko" Height="400.341" Width="250.36">
+    <Grid>
+        <TextBox x:Name="tbNameAddBox"   TextAlignment="Center"  HorizontalAlignment="Left" Height="27" Margin="28,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" FontSize="16" FontFamily="Arial" Background="{x:Null}" Foreground="#FF787878"/>
+        <TextBox x:Name="tbNumberAddBox"  TextAlignment="Center"  HorizontalAlignment="Left" Height="27" Margin="28,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" FontSize="16" FontFamily="Arial" Background="{x:Null}" Foreground="#FF787878"/>
+        <Button x:Name="btnCancelAddIBox" Content="Anuluj" HorizontalAlignment="Left" Margin="74,325,0,0" VerticalAlignment="Top" Width="96" Height="34" FontSize="16" FontFamily="Arial" FontWeight="Bold" Click="btnCancelAddIBox_Click"/>
+        <Button x:Name="btnOkAddBox" Content="Ok" HorizontalAlignment="Left" Margin="74,276,0,0" VerticalAlignment="Top" Width="96" Height="34" FontSize="16" FontFamily="Arial" FontWeight="Bold" Click="btnOkAddBox_Click"/>
+        <Label   Content="Nazwa:" Margin="92,5,72,0" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Height="28"/>
+        <Label   Content="Kod pudełka:" Margin="73,61,67,0" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Height="28" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.321"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label   Content="Opis:" Margin="92,126,93,0" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Height="28"/>
+        <TextBox x:Name="tbDescriptionAddBox"  TextAlignment="Center"  HorizontalAlignment="Left" Height="90" Margin="28,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" FontSize="16" FontFamily="Arial" Background="{x:Null}" Foreground="#FF787878" AcceptsReturn="True"
+  VerticalScrollBarVisibility="Visible"/>
+
+    </Grid>
+</Window>

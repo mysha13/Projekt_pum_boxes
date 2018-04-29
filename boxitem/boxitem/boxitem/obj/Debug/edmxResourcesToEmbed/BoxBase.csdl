@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BoxesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Box">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="BoxID" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Number" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="BoxID" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="Users" Relationship="BoxesModel.UsersBoxes" FromRole="Boxes" ToRole="Users" />
+    <NavigationProperty Name="Items" Relationship="BoxesModel.BoxesItems" FromRole="Boxes" ToRole="Items" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="ItemId" />
+      <PropertyRef Name="BoxId" />
+    </Key>
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Number" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ItemId" Type="Int32" Nullable="false" />
+    <Property Name="BoxId" Type="Int32" Nullable="false" />
+    <Property Name="Picture" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="Boxes" Relationship="BoxesModel.BoxesItems" FromRole="Items" ToRole="Boxes" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="Login" />
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="Surname" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Login" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Surname" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Boxes" Relationship="BoxesModel.UsersBoxes" FromRole="Users" ToRole="Boxes" />
+  </EntityType>
+  <EntityContainer Name="BoxesEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Boxes" EntityType="BoxesModel.Box" />
+    <EntitySet Name="Items" EntityType="BoxesModel.Item" />
+    <EntitySet Name="Users" EntityType="BoxesModel.User" />
+    <AssociationSet Name="UsersBoxes" Association="BoxesModel.UsersBoxes">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Boxes" EntitySet="Boxes" />
+    </AssociationSet>
+    <AssociationSet Name="BoxesItems" Association="BoxesModel.BoxesItems">
+      <End Role="Boxes" EntitySet="Boxes" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="UsersBoxes">
+    <End Type="BoxesModel.User" Role="Users" Multiplicity="1" />
+    <End Type="BoxesModel.Box" Role="Boxes" Multiplicity="*" />
+  </Association>
+  <Association Name="BoxesItems">
+    <End Type="BoxesModel.Box" Role="Boxes" Multiplicity="1" />
+    <End Type="BoxesModel.Item" Role="Items" Multiplicity="*" />
+  </Association>
+</Schema>

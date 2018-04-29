@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BoxesModelStoreContainer" CdmEntityContainer="BoxesEntities">
+    <EntitySetMapping Name="Boxes">
+      <EntityTypeMapping TypeName="IsTypeOf(BoxesModel.Box)">
+        <MappingFragment StoreEntitySet="Boxes">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="BoxID" ColumnName="BoxID" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="IsTypeOf(BoxesModel.Item)">
+        <MappingFragment StoreEntitySet="Items">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+          <ScalarProperty Name="BoxId" ColumnName="BoxId" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="IsTypeOf(BoxesModel.User)">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="UsersBoxes" TypeName="BoxesModel.UsersBoxes" StoreEntitySet="Boxes">
+      <EndProperty Name="Users">
+        <ScalarProperty Name="UserId" ColumnName="Users_UserId" />
+        <ScalarProperty Name="Login" ColumnName="Users_Login" />
+        <ScalarProperty Name="Name" ColumnName="Users_Name" />
+        <ScalarProperty Name="Surname" ColumnName="Users_Surname" />
+      </EndProperty>
+      <EndProperty Name="Boxes">
+        <ScalarProperty Name="Name" ColumnName="Name" />
+        <ScalarProperty Name="BoxID" ColumnName="BoxID" />
+        <ScalarProperty Name="UserId" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="BoxesItems" TypeName="BoxesModel.BoxesItems" StoreEntitySet="Items">
+      <EndProperty Name="Boxes">
+        <ScalarProperty Name="Name" ColumnName="Boxes_Name" />
+        <ScalarProperty Name="BoxID" ColumnName="Boxes_BoxID" />
+        <ScalarProperty Name="UserId" ColumnName="Boxes_UserId" />
+      </EndProperty>
+      <EndProperty Name="Items">
+        <ScalarProperty Name="Name" ColumnName="Name" />
+        <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+        <ScalarProperty Name="BoxId" ColumnName="BoxId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,16 @@
+﻿<Window x:Class="boxitem.AddPhoto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:boxitem"
+        mc:Ignorable="d"
+        Title="Dodaj zdjęcie" Height="350" Width="250">
+    <Grid>
+        <Image x:Name="imageAddPhoto"   Height="182" Margin="30,40,30,0" VerticalAlignment="Top" OpacityMask="Black" UseLayoutRounding="True" />
+        <Button x:Name="btnCancelAddPhoto" Content="Anuluj" HorizontalAlignment="Left" Margin="73,274,0,0" Width="96" FontSize="16" FontFamily="Arial" FontWeight="Bold" Height="34" VerticalAlignment="Top" Click="btnCancelAddPhoto_Click"/>
+        <Button x:Name="btnOkAddPhoto" Content="Wczytaj" HorizontalAlignment="Left" Margin="73,232,0,0" VerticalAlignment="Top" Width="96" Height="34" FontSize="16" FontFamily="Arial" FontWeight="Bold" Click="btnOkAddPhoto_Click"/>
+        <Label Content="Podgląd" Margin="85,10,78,279" FontFamily="Arial" FontSize="16" />
+
+    </Grid>
+</Window>

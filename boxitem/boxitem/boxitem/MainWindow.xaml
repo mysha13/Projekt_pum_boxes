@@ -1,0 +1,21 @@
+﻿<Window x:Class="boxitem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:boxitem"
+        mc:Ignorable="d"
+        Title="Logowanie" Height="470" Width="470">
+    <Grid>
+        <Button x:Name="btnLoginLogin" Content="Zaloguj się" Margin="123,221,137,175" VerticalAlignment="Center" Height="33" FontSize="16" FontFamily="Arial" FontWeight="Bold" Click="btnLoginLogin_Click"/>
+        <Button x:Name="btnRegisterLogin" Content="Zarejestruj się" Margin="156,323,172,0" VerticalAlignment="Top" Height="37" FontSize="14" FontFamily="Arial" FontWeight="Bold" Click="btnRegisterLogin_Click"/>
+        <Button x:Name="btnCancel" Content="Anuluj" Margin="177,369,189,0" VerticalAlignment="Top" Height="36" FontSize="16" FontFamily="Arial" FontWeight="Bold" Click="btnCancel_Click"/>
+        <TextBox x:Name="tbLoginLogin" Height="30" Margin="68,67,80,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18"/>
+        <Label Content="Login:" Margin="191,31,193,0" VerticalAlignment="Top" FontSize="18" FontFamily="Arial"/>
+        <Label  Content="Hasło:" Margin="191,124,193,0" VerticalAlignment="Top" FontSize="18" FontFamily="Arial"/>
+        <Button x:Name="btnRemindPasswordLogin" Content="Przypomnij hasło" Margin="149,268,160,121" VerticalAlignment="Center" Height="40" FontSize="14" FontFamily="Arial" FontWeight="Bold" Click="btnRemindPasswordLogin_Click"/>
+        <PasswordBox x:Name="pbPasswordLogin"  Visibility="Hidden" PasswordChar="*" HorizontalAlignment="Left" Margin="68,157,0,0" VerticalAlignment="Top" Width="314" Height="30" />
+        <TextBox x:Name="tbPasswordLogin" HorizontalAlignment="Left" Height="30" Margin="68,157,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="314" Text="{Binding Password, Mode=TwoWay, ElementName=MyPasswordBox}" Visibility="Visible" />
+
+    </Grid>
+</Window>

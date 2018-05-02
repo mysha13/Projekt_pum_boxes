@@ -21,11 +21,12 @@
         <Button x:Name="btnAddBoxes" Content="Dodaj" Margin="0,314,130,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnAddBoxes_Click"/>
         <Button x:Name="btnDeleteBoxes" Content="Usuń" Margin="134,314,24,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="3" Click="btnDeleteBoxes_Click"/>
         <Image x:Name="imageBoxes" HorizontalAlignment="Left" Height="161" Margin="20,65,0,0" VerticalAlignment="Top" Width="165" Grid.Column="3"/>
-        <Button x:Name="btnAddPhotoBoxes" Content="Dodaj" Margin="0,243,102,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnAddPhotoBoxes_Click"/>
-        <Button x:Name="btnDeletePhotoBoxes" Content="Usuń" Margin="109,243,10,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnAddPhotoBoxes" Content="Dodaj" Margin="0,259,102,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnAddPhotoBoxes_Click"/>
+        <Button x:Name="btnDeletePhotoBoxes" Content="Usuń" Margin="109,259,10,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2"/>
         <Button x:Name="btnFindItem" Content="Znajdź przedmiot" Margin="0,307,10,0" VerticalAlignment="Top" Height="45" FontSize="20" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2" Click="btnFindItem_Click"/>
         <Button x:Name="btnChooseBoxes" Content="Wejdź" Margin="50,359,50,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnChooseBoxes_Click"/>
         <Label Content="Podgląd" Margin="60,27,61,364" FontFamily="Arial" FontSize="16" Grid.Column="3" />
+        <TextBox x:Name="tbFilePathBoxes" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="0,232,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="200"/>
 
     </Grid>
 </Window>

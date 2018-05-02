@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace boxitem.View
 {
@@ -32,30 +33,18 @@ namespace boxitem.View
         private void DisplayBoxes(int id)
         {            
             using (var bb = new BD.BoxesEntities())
-            {
-                //var boxes = from b in bb.Boxes
-                //            select new
-                //            {
-                //                Name = b.Name,
-                //                Number = b.Number,
-                //                Description = b.Description
-
-                //            };
-
+            { 
                 //IQueryable<Boxes> box =
                 //        from u in bb.Boxes
                 //        where u.UserId=id;
                 //        select u;
 
-                //foreach (var item in box)
-                //{
-
-                //}
+               
                
                 var boxes = bb.Boxes                                    //-----BŁĄD
                     .ToList()
                     .Where(x=>x.UserId==id)
-                    .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description))                    
+                    .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description, x.BoxID))                    
                     .ToList();               
 
                 datagridBoxes.ItemsSource = boxes;
@@ -99,9 +88,42 @@ namespace boxitem.View
 
         private void btnAddPhotoBoxes_Click(object sender, RoutedEventArgs e)
         {
-            OFileDialog();
+
+            //OFileDialog();
+            //FileStream Stream = new FileStream(tbFilePathBoxes.Text, FileMode.Open, FileAccess.Read);
+            //StreamReader Reader = new StreamReader(Stream);
+            //Byte[] ImgData = new Byte[Stream.Length - 1];
+            //Stream.Read(ImgData, 0, (int)Stream.Length - 1);
+            //using (BD.BoxesEntities database = new BD.BoxesEntities())
+            //{
+            //    BD.Box o = database.Boxes.Create();
+            //    o.Name = GetFileNameNoExt(tbFilePathBoxes.Text);
+            //    o.Picture = ImgData;
+            //    //o.Picture= File.ReadAllBytes(op.FileName);
+            //    database.Boxes.Add(o);
+            //    database.SaveChanges();
+            //}
+
+
+
+
+
+
+
+
+           
             //AddPhoto addphot = new AddPhoto();
             //addphot.Show();
+            //int nrid = int.Parse(datagridBoxes.CurrentItem.ToString());
+            //using (var database = new BD.BoxesEntities())
+            //{
+            //    BD.Box boxone = new BD.Box();
+            //    boxone.Picture = ConvertToByte(this.imageBoxes, sPath);
+            //    boxone.BoxID = nrid;
+            //    database.Boxes.Add(boxone);
+            //    database.SaveChanges();
+                
+            //}
         }
 
         private void btnAddBoxes_Click(object sender, RoutedEventArgs e)
@@ -137,8 +159,25 @@ namespace boxitem.View
               "Portable Network Graphic (*.png)|*.png";
             if (op.ShowDialog() == true)
             {
+                tbFilePathBoxes.Text = op.FileName;
                 imageBoxes.Source = new BitmapImage(new Uri(op.FileName));
+                
             }
+            
+        }
+        private byte[] ConvertToByte(string sPath)
+        {
+            byte[] data = null;
+            FileInfo fInfo = new FileInfo(sPath);
+            long numBytes = fInfo.Length;
+            FileStream fStream = new FileStream(sPath, FileMode.Open, FileAccess.Read);
+            BinaryReader br = new BinaryReader(fStream);
+            data = br.ReadBytes((int)numBytes);
+            return data;
+        }
+        public string GetFileNameNoExt(string FilePathFileName)
+        {
+            return System.IO.Path.GetFileNameWithoutExtension(FilePathFileName);
         }
     }
 }

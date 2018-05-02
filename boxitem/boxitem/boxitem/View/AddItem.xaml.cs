@@ -19,6 +19,7 @@ namespace boxitem
     /// </summary>
     public partial class AddItem : Window
     {
+        CurrentInfo currentbox = new CurrentInfo();
         public AddItem()
         {
             InitializeComponent();
@@ -27,6 +28,33 @@ namespace boxitem
         private void btnCancelAddItem_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void btnOkAddItem_Click(object sender, RoutedEventArgs e)
+        {
+            using (var database = new BD.BoxesEntities())
+            {
+                int idbox = currentbox.BoxId;
+
+                var items = database.Boxes
+                    .ToList()
+                    .Where(x => x.UserId == idbox)
+                    .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description))//, x.UserId))
+                                                                                                 //.Where()
+                    .ToList();
+
+                BD.Item newitem = new BD.Item
+                {
+                    Name = tbNameAddItem.Text.Trim(),
+                    Number = int.Parse(tbNumberAddItem.Text),
+                    Description = tbDescriptionAddItem.Text.Trim(),
+                    //UserId = iduser,                    
+                };
+
+                database.Items.Add(newitem);
+                //items.Add(ViewModel.ItemViewModel.Create(tbNameAddItem.ToString(), int.Parse(tbNumberAddItem.ToString()), tbDescriptionAddItem.Text.Trim(),int.Parse(idbox.ToString())));
+                database.SaveChanges();
+            }
         }
     }
 }

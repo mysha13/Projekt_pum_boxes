@@ -25,19 +25,19 @@ namespace boxitem
             DisplayItems(boxid);
 
         }
-        private void DisplayItems(int id)
+        private void DisplayItems(int boxid)
         {
-            using (var bb = new BD.BoxesEntities())
+            using (var database = new BD.BoxesEntities())
             {
-                var items = bb.Items
+                var allitems = database.Items
                     .ToList()
-                    .Where(x => x.BoxId == id)
+                    .Where(x => x.BoxId == boxid)
                     .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description))                    
                     .ToList();
 
-                datagridItems.ItemsSource = items;
-                
-                //bb.SaveChanges();
+                datagridItems.ItemsSource = allitems;
+
+                database.SaveChanges();
 
             }
         }

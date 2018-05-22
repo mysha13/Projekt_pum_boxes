@@ -34,42 +34,29 @@ namespace boxitem
 
         private void btnOkAddBox_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(currentuser.UserId.ToString());
             using (var database = new BD.BoxesEntities())
-            {              
-                int iduser=currentuser.UserId;
-                
-                var boxes = database.Boxes
-                    .ToList()
-                    .Where(x => x.UserId == iduser)
-                    .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description))//, x.UserId))
-                    //.Where()
-                    .ToList();
-
-                //datagridBoxes.ItemsSource = boxes;
-
-                //BD.Box newbox = new BD.Box
-                //{
-                //    Name = tbNameAddBox.Text.Trim(),
-                //    Number = int.Parse(tbNumberAddBox.Text.Trim()),
-                //    Description = tbDescriptionAddBox.ToString().Trim(),
-                //    UserId = iduser
-                //};
-                //database.Boxes.Add(newbox);  
-
-                BD.Box newbox = new BD.Box
+            {
+                int iduser = currentuser.UserID;
+                try
                 {
-                    Name = tbNameAddBox.Text.Trim(),
-                    Number=int.Parse(tbNumberAddBox.Text),
-                    Description=tbDescriptionAddBox.Text.Trim(),
-                    UserId=iduser,
-                    
-                    
-                };
-                MessageBox.Show(tbDescriptionAddBox.Text);
-                database.Boxes.Add(newbox);
-                //boxes.Add(ViewModel.BoxViewModel.Create(tbNameAddBox.ToString(), int.Parse(tbNumberAddBox.ToString()), tbDescriptionAddBox.ToString(),int.Parse(iduser.ToString())));
-                database.SaveChanges();
+                    BD.Box newbox = new BD.Box
+                    {
+                        Name = tbNameAddBox.Text.Trim(),
+                        Number = int.Parse(tbNumberAddBox.Text),
+                        Description = tbDescriptionAddBox.Text.Trim(),
+                        UserId = iduser,
+                        Users = database.Users.Single(x => x.UserId == iduser)
+
+                    };
+                    database.Boxes.Add(newbox);
+                    database.SaveChanges();
+                    this.Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Blędne dane! Kod pudełka musi być liczbą!");
+                }  
+               
             }
         }
     }

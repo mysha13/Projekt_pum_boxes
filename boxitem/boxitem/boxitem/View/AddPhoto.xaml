@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:boxitem"
         mc:Ignorable="d"
-        Title="Dodaj zdjęcie" Height="350" Width="250">
+        Title="Dodaj zdjęcie" Height="350" Width="250" ResizeMode="NoResize">
     <Grid>
         <Image x:Name="imageAddPhoto"   Height="182" Margin="30,40,30,0" VerticalAlignment="Top" OpacityMask="Black" UseLayoutRounding="True" />
         <Button x:Name="btnCancelAddPhoto" Content="Anuluj" HorizontalAlignment="Left" Margin="73,274,0,0" Width="96" FontSize="16" FontFamily="Arial" FontWeight="Bold" Height="34" VerticalAlignment="Top" Click="btnCancelAddPhoto_Click"/>

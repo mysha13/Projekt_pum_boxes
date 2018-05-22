@@ -34,8 +34,8 @@ namespace boxitem
         {
             
             CurrentInfo currentid = new CurrentInfo();
-            int itemid=currentid.ItemId;
-            int boxid = currentid.BoxId;
+            int itemid=currentid.ItemID;
+            int boxid = currentid.BoxID;
 
             if(boxid !=0 && itemid !=0)
             {

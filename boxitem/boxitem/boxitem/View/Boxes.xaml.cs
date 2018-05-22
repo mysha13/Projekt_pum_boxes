@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using System.Data;
+using System.Collections;
 
 namespace boxitem.View
 {
@@ -21,37 +23,28 @@ namespace boxitem.View
     /// </summary>
     public partial class Boxes : Window
     {
+        CurrentInfo currentuser = new CurrentInfo();
+        CurrentInfo currentbox = new CurrentInfo();
+        BD.BoxesEntities database = new BD.BoxesEntities();
 
-        public Boxes(int id)
+        public Boxes()
         {
             InitializeComponent();
-            //CurrentInfo currentuser = new CurrentInfo();
-            //MessageBox.Show(currentuser.ToString());
-            MessageBox.Show(id.ToString());
-                DisplayBoxes(id);
+                DisplayBoxes(currentuser.UserID);
+
+            
         }
-        private void DisplayBoxes(int id)
+        public void DisplayBoxes(int iduser)
         {            
             using (var bb = new BD.BoxesEntities())
             { 
-                //IQueryable<Boxes> box =
-                //        from u in bb.Boxes
-                //        where u.UserId=id;
-                //        select u;
-
-               
-               
-                var boxes = bb.Boxes                                    //-----BŁĄD
+                var boxes = bb.Boxes                                   
                     .ToList()
-                    .Where(x=>x.UserId==id)
+                    .Where(x=>x.UserId== iduser)
                     .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description, x.BoxID))                    
                     .ToList();               
 
-                datagridBoxes.ItemsSource = boxes;
-
-               // boxes.Add(ViewModel.BoxViewModel.Create("asd", 234, "asd"));
-                bb.SaveChanges();
-
+               datagridBoxes.ItemsSource = boxes;               
             }
         }
 
@@ -67,63 +60,75 @@ namespace boxitem.View
         }
 
         private void btnChooseBoxes_Click(object sender, RoutedEventArgs e)
-        {
-            CurrentInfo currentbox = new CurrentInfo();
-            int zmienna = 0;
+        {        
             try
             {
-                string idbox=datagridBoxes.CurrentItem.ToString();
+                //object item = datagridBoxes.SelectedItem;
+                //string IDitem = (datagridBoxes.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
+                int ID = GetSelectedItemId();//int.Parse(IDitem);
                 
-                currentbox.BoxId = zmienna;//int.Parse(uid.ToString())
-                MessageBox.Show(currentbox.UserId.ToString());                
-                View.Boxes boxes = new View.Boxes(currentbox.BoxId);
-                boxes.Show();
-                
+                currentbox.BoxID = ID;
+                //MessageBox.Show(currentbox.UserID.ToString());  
+                Items items = new Items(currentbox.BoxID);
+                items.Show();                  
             }
             catch
             {
-                MessageBox.Show("Nie wybrano żadnego pudełka. Wybierz lub dodaj nowe.");
+                MessageBox.Show("Nie wybrano żadnego pudełka. \nWybierz istniejące lub dodaj nowe.");
             }
         }
 
         private void btnAddPhotoBoxes_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                int IID = GetSelectedItemId();
 
-            //OFileDialog();
-            //FileStream Stream = new FileStream(tbFilePathBoxes.Text, FileMode.Open, FileAccess.Read);
-            //StreamReader Reader = new StreamReader(Stream);
-            //Byte[] ImgData = new Byte[Stream.Length - 1];
-            //Stream.Read(ImgData, 0, (int)Stream.Length - 1);
-            //using (BD.BoxesEntities database = new BD.BoxesEntities())
-            //{
-            //    BD.Box o = database.Boxes.Create();
-            //    o.Name = GetFileNameNoExt(tbFilePathBoxes.Text);
-            //    o.Picture = ImgData;
-            //    //o.Picture= File.ReadAllBytes(op.FileName);
-            //    database.Boxes.Add(o);
-            //    database.SaveChanges();
-            //}
+                OFileDialog();
+
+                FileStream Stream = new FileStream(tbFilePathBoxes.Text, FileMode.Open, FileAccess.Read);
+                StreamReader Reader = new StreamReader(Stream);
+                Byte[] ImgData = new Byte[Stream.Length - 1];
+                Stream.Read(ImgData, 0, (int)Stream.Length - 1);
 
 
 
+               // BD.BoxesEntities dbdb = new BD.BoxesEntities();
+                var nowe = (from stu in database.Boxes
+                            where stu.BoxID == IID
+                            select stu).SingleOrDefault();
 
+                nowe.Picture = ImgData;
+                database.SaveChanges();
 
+                //MessageBox.Show(datagridBoxes.SelectedIndex.ToString());
 
+                imageBoxes.Source = LoadImage(ImgData);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Nie wybrano pudełka!");
+            }
+            
+                        
+        }
 
-
-           
-            //AddPhoto addphot = new AddPhoto();
-            //addphot.Show();
-            //int nrid = int.Parse(datagridBoxes.CurrentItem.ToString());
-            //using (var database = new BD.BoxesEntities())
-            //{
-            //    BD.Box boxone = new BD.Box();
-            //    boxone.Picture = ConvertToByte(this.imageBoxes, sPath);
-            //    boxone.BoxID = nrid;
-            //    database.Boxes.Add(boxone);
-            //    database.SaveChanges();
-                
-            //}
+        private static BitmapImage LoadImage(byte[] imageData)
+        {
+            if (imageData == null || imageData.Length == 0) return null;
+            var image = new BitmapImage();
+            using (var mem = new MemoryStream(imageData))
+            {
+                mem.Position = 0;
+                image.BeginInit();
+                image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = null;
+                image.StreamSource = mem;
+                image.EndInit();
+            }
+            image.Freeze();
+            return image;
         }
 
         private void btnAddBoxes_Click(object sender, RoutedEventArgs e)
@@ -133,21 +138,25 @@ namespace boxitem.View
         }
 
         private void btnDeleteBoxes_Click(object sender, RoutedEventArgs e)
-        {            
-            //usuwanie komunikat z zapytaniem
-            //MessageBox.Show("Na pewno chcesz usunąć pudełko z całą zawartością?", "Usuwanie",
-            //   MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            //if (MessageBox.Show("Na pewno chcesz usunąć pudełko z całą zawartością?", "Usuwanie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
-            //{
-            //    //Close();
-            //    //do no stuff
-            //}
-            //else
-            //{
-            //    //usuwanie pudełka z bazy 
+        {                     
+            if (MessageBox.Show("Na pewno chcesz usunąć pudełko z całą zawartością?", "Usuwanie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                
+            {
+                Close();
+            }
+            else
+            {
+                int IID = GetSelectedItemId();
+                 
+                //BD.BoxesEntities dbdb = new BD.BoxesEntities();                
+                var deletebox = (from stu in database.Boxes
+                                where stu.BoxID == IID
+                                select stu).SingleOrDefault();
 
-            //    //do yes stuff
-            //}
+                database.Boxes.Remove(deletebox);
+                database.SaveChanges();
+                DisplayBoxes(currentuser.UserID);
+            }
         }
         private void OFileDialog()
         {
@@ -165,19 +174,183 @@ namespace boxitem.View
             }
             
         }
-        private byte[] ConvertToByte(string sPath)
+
+        
+        private void btnRefreshBoxes_Click(object sender, RoutedEventArgs e)
         {
-            byte[] data = null;
-            FileInfo fInfo = new FileInfo(sPath);
-            long numBytes = fInfo.Length;
-            FileStream fStream = new FileStream(sPath, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fStream);
-            data = br.ReadBytes((int)numBytes);
-            return data;
+            DisplayBoxes(currentuser.UserID);
         }
-        public string GetFileNameNoExt(string FilePathFileName)
+
+        private void datagridBoxes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            return System.IO.Path.GetFileNameWithoutExtension(FilePathFileName);
+            try
+            {
+                int IID = GetSelectedItemId();
+                               
+                var currentimage = (from stu in database.Boxes
+                                    where stu.BoxID == IID
+                                    select stu).SingleOrDefault();
+
+                if (currentimage.Picture != null)
+                {
+                    var imagenwe = BitmapImageFromBytes(currentimage.Picture);
+                    imageBoxes.Source = imagenwe;
+                    
+                }
+                else
+                {
+                    imageBoxes.Source = null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+           
+
+            
+        }
+              
+        public static BitmapImage BitmapImageFromBytes(byte[] bytes)
+        {
+            BitmapImage image = null;
+            MemoryStream stream = null;
+            try
+            {
+                stream = new MemoryStream(bytes);
+                stream.Seek(0, SeekOrigin.Begin);
+                System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
+                image = new BitmapImage();
+                image.BeginInit();
+                MemoryStream ms = new MemoryStream();
+                img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                ms.Seek(0, SeekOrigin.Begin);
+                image.StreamSource = ms;
+                image.StreamSource.Seek(0, SeekOrigin.Begin);
+                image.EndInit();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                stream.Close();
+                stream.Dispose();
+            }
+            return image;
+        }
+
+        private void btnShowBoxes_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int IID = GetSelectedItemId();
+                //BD.BoxesEntities dbdb = new BD.BoxesEntities();
+                var currentimage = (from stu in database.Boxes
+                                    where stu.BoxID == IID
+                                    select stu).SingleOrDefault();
+
+                if (currentimage.Picture != null)
+                {
+                    var imagefromdb = BitmapImageFromBytes(currentimage.Picture);
+                    imageBoxes.Source = imagefromdb;
+                }
+                else
+                {
+                    imageBoxes.Source = null;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Nie wybrano pudełka.");
+            }
+            
+        }
+
+        private void btnDeletePhotoBoxes_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                int IID = GetSelectedItemId();
+
+                if (MessageBox.Show("Na pewno chcesz usunąć zdjęcie pudełka?", "Usuwanie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+
+                {
+                    Close();
+                }
+                else
+                {
+                    //BD.BoxesEntities dbdb = new BD.BoxesEntities();
+                    var currentimage = (from stu in database.Boxes
+                                        where stu.BoxID == IID
+                                        select stu).SingleOrDefault();
+
+                    if (currentimage.Picture != null)
+                    {
+                        currentimage.Picture = null;
+                        imageBoxes.Source = null;
+                        database.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Nie wybrano pudełka!");
+            }
+            
+
+        }
+
+        private void datagridBoxes_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+
+            try
+            {
+                var row_list = GetDataGridRows(datagridBoxes);
+                foreach (DataGridRow single_row in row_list)
+                {
+                    if (single_row.IsSelected == true)
+                    {
+                        int IID = GetSelectedItemId();
+                        //BD.BoxesEntities dbdb = new BD.BoxesEntities();
+                        var currentimage = (from stu in database.Boxes
+                                            where stu.BoxID == IID
+                                            select stu).SingleOrDefault();
+                        if (currentimage.Picture != null)
+                        {
+                            var imagefromdb = BitmapImageFromBytes(currentimage.Picture);
+                            imageBoxes.Source = imagefromdb;
+                        }
+                        else
+                        {
+                            imageBoxes.Source = null;
+                        }
+                    }
+                }
+
+            }
+            catch { }
+        }
+        public IEnumerable<DataGridRow> GetDataGridRows(DataGrid grid)
+        {
+            var itemsSource = grid.ItemsSource as IEnumerable;
+            if (null == itemsSource) yield return null;
+            foreach (var item in itemsSource)
+            {
+                var row = grid.ItemContainerGenerator.ContainerFromItem(item) as DataGridRow;
+                if (null != row) yield return row;
+            }
+        }
+        public int GetSelectedItemId()
+        {
+            object item = datagridBoxes.SelectedItem;
+            string ID = (datagridBoxes.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
+            int IID = int.Parse(ID);
+            return IID;
         }
     }
 }

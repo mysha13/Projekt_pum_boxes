@@ -14,6 +14,7 @@ namespace boxitem.ViewModel
 
         public string Description { get; set; }
         public int UserId { get; set; }
+        public int BoxId { set; get; }
 
         public BoxViewModel(string name, int? number, string description)
         {
@@ -26,12 +27,12 @@ namespace boxitem.ViewModel
         {
             return new BoxViewModel(name, number, description);
         }
-        public BoxViewModel(string name, int? number, string description, int userid)
+        public BoxViewModel(string name, int? number, string description, int boxid)
         {
             this.Name = name;
             this.Number = number;
             this.Description = description;
-            this.UserId = userid;
+            this.BoxId = boxid;
         }
         public static BoxViewModel Create(string name, int? number, string description, int userid)
         {

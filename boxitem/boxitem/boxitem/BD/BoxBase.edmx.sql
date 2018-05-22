@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/24/2018 11:25:55
--- Generated from EDMX file: F:\kopia_d\studia_sem6\pum_projekt_poprawki\boxitem\boxitem\boxitem\BoxBase.edmx
+-- Date Created: 05/08/2018 11:55:16
+-- Generated from EDMX file: F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\BD\BoxBase.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -47,7 +47,7 @@ CREATE TABLE [dbo].[Boxes] (
     [Name] nvarchar(50)  NOT NULL,
     [Number] int  NULL,
     [Description] varchar(max)  NULL,
-    [BoxID] int  NOT NULL,
+    [BoxID] int IDENTITY(1,1) NOT NULL,
     [UserId] int  NOT NULL,
     [Picture] varbinary(max)  NULL,
     [Users_UserId] int  NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE [dbo].[Items] (
     [Name] nvarchar(50)  NOT NULL,
     [Number] int  NULL,
     [Description] varchar(max)  NULL,
-    [ItemId] int  NOT NULL,
+    [ItemId] int IDENTITY(1,1) NOT NULL,
     [BoxId] int  NOT NULL,
     [Picture] varbinary(max)  NULL,
     [Boxes_Name] nvarchar(50)  NOT NULL,
@@ -73,7 +73,7 @@ GO
 
 -- Creating table 'Users'
 CREATE TABLE [dbo].[Users] (
-    [UserId] int  NOT NULL,
+    [UserId] int IDENTITY(1,1) NOT NULL,
     [Login] nchar(10)  NOT NULL,
     [Password] nchar(20)  NOT NULL,
     [Name] nchar(10)  NOT NULL,

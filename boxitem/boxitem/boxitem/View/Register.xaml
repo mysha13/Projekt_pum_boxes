@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:boxitem"
         mc:Ignorable="d"
-        Title="Rejestracja" Height="460" Width="460">
+        Title="Rejestracja" Height="460" Width="460" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="96*"/>

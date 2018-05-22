@@ -34,26 +34,33 @@ namespace boxitem
         {
             using (var database = new BD.BoxesEntities())
             {
-                int idbox = currentbox.BoxId;
+                int idbox = currentbox.BoxID;
 
                 var items = database.Boxes
                     .ToList()
-                    .Where(x => x.UserId == idbox)
-                    .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description))//, x.UserId))
-                                                                                                 //.Where()
+                    .Where(x => x.BoxID == idbox)
+                    .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description))
                     .ToList();
-
-                BD.Item newitem = new BD.Item
+                try
                 {
-                    Name = tbNameAddItem.Text.Trim(),
-                    Number = int.Parse(tbNumberAddItem.Text),
-                    Description = tbDescriptionAddItem.Text.Trim(),
-                    //UserId = iduser,                    
-                };
+                    BD.Item newitem = new BD.Item
+                    {
+                        Name = tbNameAddItem.Text.Trim(),
+                        Number = int.Parse(tbNumberAddItem.Text),
+                        Description = tbDescriptionAddItem.Text.Trim(),
+                        BoxId = currentbox.BoxID,
+                        Boxes = database.Boxes.Single(x => x.BoxID == idbox)                 
+                    };
 
-                database.Items.Add(newitem);
-                //items.Add(ViewModel.ItemViewModel.Create(tbNameAddItem.ToString(), int.Parse(tbNumberAddItem.ToString()), tbDescriptionAddItem.Text.Trim(),int.Parse(idbox.ToString())));
-                database.SaveChanges();
+                    database.Items.Add(newitem);
+                    database.SaveChanges();
+                    this.Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Błędne dane. Pole 'Liczba rzeczy' musi być liczbą!");
+                }
+                
             }
         }
     }

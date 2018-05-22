@@ -22,7 +22,7 @@
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="Number" Type="int" Nullable="true" />
     <Property Name="Description" Type="varchar(max)" Nullable="true" />
-    <Property Name="BoxID" Type="int" Nullable="false" />
+    <Property Name="BoxID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="Picture" Type="varbinary(max)" Nullable="true" />
     <Property Name="Users_UserId" Type="int" Nullable="false" />
@@ -39,7 +39,7 @@
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="Number" Type="int" Nullable="true" />
     <Property Name="Description" Type="varchar(max)" Nullable="true" />
-    <Property Name="ItemId" Type="int" Nullable="false" />
+    <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BoxId" Type="int" Nullable="false" />
     <Property Name="Picture" Type="varbinary(max)" Nullable="true" />
     <Property Name="Boxes_Name" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -53,7 +53,7 @@
       <PropertyRef Name="Name" />
       <PropertyRef Name="Surname" />
     </Key>
-    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Login" Type="nchar" Nullable="false" MaxLength="10" />
     <Property Name="Password" Type="nchar" Nullable="false" MaxLength="20" />
     <Property Name="Name" Type="nchar" Nullable="false" MaxLength="10" />

@@ -23,27 +23,8 @@ namespace boxitem
         CurrentInfo currentuser = new CurrentInfo();
 
         public MainWindow()
-        {
-            //var bb = new BoxesEntities();
-            InitializeComponent();
-            //Register r = new Register();
-            //r.Show();
-           //View. Boxes b = new View.Boxes(1);                          //-----BŁĄD
-            //b.Show();
-            //Items i = new Items();
-            //i.Show();
-            //RemindPassword rp = new RemindPassword();
-            //rp.Show();
-            //FindItem fi = new FindItem();
-            //fi.Show();
-            //BoxesList bl = new BoxesList();
-            //bl.Show();
-            //AddPhoto ap = new AddPhoto();
-            //ap.Show();
-            //AddItem ai = new AddItem();
-            //ai.Show();
-            //AddBox ab = new AddBox();
-            //ab.Show();
+        {            
+            InitializeComponent();            
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -52,16 +33,7 @@ namespace boxitem
         }
        
         private void btnLoginLogin_Click(object sender, RoutedEventArgs e)
-        {
-            using (var data = new BD.BoxesEntities())
-            {
-                IQueryable<BD.User> fituser =
-                        from u in data.Users
-                        where u.Login == tbLoginLogin.Text
-                        select u;
-            }
-            // brak dostępu do pól fituser
-            
+        {           
             using (var data = new BD.BoxesEntities())
             {
                 try
@@ -77,6 +49,9 @@ namespace boxitem
                         if (tbPasswordLogin.Text == i.Password.Trim())
                         {
                             checkid = i.UserId;
+                            currentuser.USERLoginCurrent = i.Login;
+                            currentuser.USERNameCurrent = i.Name;
+                            currentuser.USERSurnameCurrent = i.Surname;
                         }
                     }
                     if (checkid == -1)
@@ -85,13 +60,9 @@ namespace boxitem
                     }
                     else
                     {
-                        currentuser.UserId = checkid; //int.Parse(uid.ToString())
+                        currentuser.UserID = checkid; //int.Parse(uid.ToString())                        
                         //MessageBox.Show(currentuser.UserId.ToString());
-                        OpenNextWindow();
-                        //this.Hide();
-                        //View.Boxes boxes = new View.Boxes(currentuser.UserId);                      //-----BŁĄD
-                        //boxes.ShowDialog();
-                        //this.Close();
+                        OpenNextWindow();                        
                     }
                 }
                 catch
@@ -110,23 +81,22 @@ namespace boxitem
 
         private void btnRemindPasswordLogin_Click(object sender, RoutedEventArgs e)
         {
-            RemindPassword remindpassword = new RemindPassword();
-            remindpassword.Show(); 
+            RemindPassword remindpasswordwindow = new RemindPassword();
+            remindpasswordwindow.Show(); 
         }
 
         private void btnRegisterLogin_Click(object sender, RoutedEventArgs e)
         {
-            Register register = new Register();
-            register.Show();
+            Register registerwindow = new Register();
+            registerwindow.Show();
         }
+
         private void OpenNextWindow ()
         {
-            //currentuser.UserId = checkid; //int.Parse(uid.ToString())
-                                          //MessageBox.Show(currentuser.UserId.ToString());
-                                          //this.Hide();
-            View.Boxes boxes = new View.Boxes(currentuser.UserId);                      //-----BŁĄD
+            this.Hide();
+            View.Boxes boxes = new View.Boxes();//(currentuser.UserID);                              
             boxes.ShowDialog();
-            //this.Close();
+            this.Close();
         }
     }
 }

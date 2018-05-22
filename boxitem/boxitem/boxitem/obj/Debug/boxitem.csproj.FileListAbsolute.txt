@@ -111,7 +111,6 @@ F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\bin\Debug\boxitem.pdb
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\bin\Debug\EntityFramework.dll
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\bin\Debug\EntityFramework.xml
-F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\boxitem.csprojResolveAssemblyReference.cache
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\View\AddBox.g.cs
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\View\AddItem.g.cs
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\View\AddPhoto.g.cs
@@ -139,3 +138,4 @@ F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\boxitem.g.resources
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\boxitem.Properties.Resources.resources
 F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\boxitem.csproj.GenerateResource.Cache
+F:\kopia_d\studia_sem6\pumpum_projekt\Projekt_pum_boxes\boxitem\boxitem\boxitem\obj\Debug\boxitem.csprojResolveAssemblyReference.cache

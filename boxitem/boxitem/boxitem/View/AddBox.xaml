@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:boxitem"
         mc:Ignorable="d"
-        Title="Dodaj pudełko" Height="400.341" Width="250.36">
+        Title="Dodaj pudełko" Height="400.341" Width="250.36" ResizeMode="NoResize">
     <Grid>
         <TextBox x:Name="tbNameAddBox"   TextAlignment="Center"  HorizontalAlignment="Left" Height="27" Margin="28,33,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" FontSize="16" FontFamily="Arial" Background="{x:Null}" Foreground="#FF787878"/>
         <TextBox x:Name="tbNumberAddBox"  TextAlignment="Center"  HorizontalAlignment="Left" Height="27" Margin="28,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="182" FontSize="16" FontFamily="Arial" Background="{x:Null}" Foreground="#FF787878"/>

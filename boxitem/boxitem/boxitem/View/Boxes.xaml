@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:boxitem"
         mc:Ignorable="d"
-        Title="Pudełka" Height="460" Width="500.5">
+        Title="Pudełka" Height="460" Width="500.5" ResizeMode="NoResize">
     <Grid Width="460" Margin="0,0,-8,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
@@ -14,19 +14,20 @@
             <ColumnDefinition Width="200*"/>
             <ColumnDefinition Width="11*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnRefreshBoxes" Content="Odśwież" Margin="-1,24,154,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnRefreshBoxes" Content="Odśwież" Margin="-1,24,154,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnRefreshBoxes_Click"/>
         <Button x:Name="btnCancelBoxes" Content="Anuluj" HorizontalAlignment="Left" Margin="105,373,0,0" VerticalAlignment="Top" Width="96" Height="34" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2" Click="btnCancelBoxes_Click"/>
-        <Label Content="* Po każdej zmianie proszę nacisnąć przycisk 'Odśwież'" Margin="-1,396,152,-1" FontFamily="Arial" FontSize="14" Grid.ColumnSpan="4"/>
-        <DataGrid x:Name="datagridBoxes" Margin="-1,65,24,0" VerticalAlignment="Top" Height="246" Grid.ColumnSpan="3" SelectionMode="Single" IsSynchronizedWithCurrentItem="False"/>
+        <Label Content="* Po każdej zmianie proszę nacisnąć przycisk 'Odśwież'" Margin="-1,396,100,-1" FontFamily="Arial" FontSize="13" Grid.ColumnSpan="4"/>
+        <DataGrid x:Name="datagridBoxes" Margin="-1,65,24,0" VerticalAlignment="Top" Height="246" Grid.ColumnSpan="3" SelectionMode="Single" IsSynchronizedWithCurrentItem="False" IsReadOnly="True" SelectionChanged="datagridBoxes_SelectionChanged_1"/>
         <Button x:Name="btnAddBoxes" Content="Dodaj" Margin="0,314,130,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnAddBoxes_Click"/>
         <Button x:Name="btnDeleteBoxes" Content="Usuń" Margin="134,314,24,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="3" Click="btnDeleteBoxes_Click"/>
         <Image x:Name="imageBoxes" HorizontalAlignment="Left" Height="161" Margin="20,65,0,0" VerticalAlignment="Top" Width="165" Grid.Column="3"/>
         <Button x:Name="btnAddPhotoBoxes" Content="Dodaj" Margin="0,259,102,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnAddPhotoBoxes_Click"/>
-        <Button x:Name="btnDeletePhotoBoxes" Content="Usuń" Margin="109,259,10,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnDeletePhotoBoxes" Content="Usuń" Margin="109,259,10,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2" Click="btnDeletePhotoBoxes_Click"/>
         <Button x:Name="btnFindItem" Content="Znajdź przedmiot" Margin="0,307,10,0" VerticalAlignment="Top" Height="45" FontSize="20" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2" Click="btnFindItem_Click"/>
         <Button x:Name="btnChooseBoxes" Content="Wejdź" Margin="50,359,50,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnChooseBoxes_Click"/>
-        <Label Content="Podgląd" Margin="60,27,61,364" FontFamily="Arial" FontSize="16" Grid.Column="3" />
-        <TextBox x:Name="tbFilePathBoxes" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="0,232,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="200"/>
+        <Label Content="Podgląd zdjęcia" Margin="37,27,37,364" FontFamily="Arial" FontSize="16" Grid.Column="3" />
+        <TextBox x:Name="tbFilePathBoxes" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="0,232,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="200" Visibility="Hidden"/>
+        <Button x:Name="btnShowBoxes" Content="Pokaż zdjęcie&#xD;pudełka"  Margin="104,24,24,0" TextBlock.TextAlignment="Center" VerticalAlignment="Top" Height="34" FontFamily="Arial" Grid.ColumnSpan="3" Click="btnShowBoxes_Click" Grid.RowSpan="2" />
 
     </Grid>
 </Window>

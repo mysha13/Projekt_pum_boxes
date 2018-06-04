@@ -239,7 +239,6 @@ namespace boxitem
             {
                 int currentitemID = GetSelectedItemId();
                 currentinfo.ItemID = currentitemID;
-
                 BoxesList boxlist = new BoxesList();
                 boxlist.Show();
             }
@@ -271,8 +270,8 @@ namespace boxitem
         {
             try
             {
-               // int currentitemID = GetSelectedItemId();
-                currentinfo.ItemID = GetSelectedItemId(); //currentitemID;
+                int currentitemID = GetSelectedItemId();
+                currentinfo.ItemID = currentitemID;
 
                 OFileDialog();
                 FileStream Stream = new FileStream(tbFilePathItems.Text, FileMode.Open, FileAccess.Read);
@@ -280,15 +279,13 @@ namespace boxitem
                 Byte[] ImgData = new Byte[Stream.Length - 1];
                 Stream.Read(ImgData, 0, (int)Stream.Length - 1);
 
-                DBAction.AddData addphoto = new DBAction.AddData();
-                addphoto.SaveItemPhoto(ImgData);
 
-                //var nowe = (from stu in database.Items
-                //            where stu.ItemId == currentinfo.ItemID
-                //            select stu).SingleOrDefault();
+                var nowe = (from stu in database.Items
+                            where stu.ItemId == currentitemID
+                            select stu).SingleOrDefault();
 
-                //nowe.Picture = ImgData;
-                //database.SaveChanges();
+                nowe.Picture = ImgData;
+                database.SaveChanges();
 
                 imageItems.Source = DBAction.ImageData.LoadImage(ImgData);
             }

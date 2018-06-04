@@ -13,12 +13,23 @@ namespace boxitem.DBAction
 
         public void SaveItemPhoto(Byte[] ImgData)
         {
-            var nowe = (from stu in database.Items
+            var item = (from stu in database.Items
                         where stu.ItemId == currentinfo.ItemID
                         select stu).SingleOrDefault();
 
-            nowe.Picture = ImgData;
+            item.Picture = ImgData;
             database.SaveChanges();
+        }
+
+        public void SaveBoxPhoto(Byte[] ImgData)
+        {
+            var box = (from b in database.Boxes
+                       where b.BoxID == currentinfo.BoxID
+                       select b).SingleOrDefault();
+
+            box.Picture = ImgData;
+            database.SaveChanges();
+            
         }
 
     }

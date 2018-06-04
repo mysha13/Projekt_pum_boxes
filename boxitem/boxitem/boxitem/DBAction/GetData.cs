@@ -13,6 +13,8 @@ namespace boxitem.DBAction
 
        public void GetItemPhoto(int currentitemID)
         {
+            Items item = new Items();
+
             var showboximage = (from stu in database.Items
                                 where stu.ItemId == currentitemID
                                 select stu).SingleOrDefault();
@@ -20,13 +22,31 @@ namespace boxitem.DBAction
             if (showboximage.Picture != null)
             {
                 var imagefromdb = DBAction.ImageData.BitmapImageFromBytes(showboximage.Picture);
-                Items item = new Items();
                 item.imageItems.Source = imagefromdb;
             }
             else
             {
-                Items item = new Items();
                 item.imageItems.Source = null;
+            }
+        }
+
+        public  void GetAndShowBoxPhoto(int currentboxID)
+        {
+            View.Boxes box = new View.Boxes();
+
+            var showboximage = (from stu in database.Boxes
+                                where stu.BoxID == currentboxID
+                                select stu).SingleOrDefault();
+
+            if (showboximage.Picture != null)
+            {
+                var imagefromdb = DBAction.ImageData.BitmapImageFromBytes(showboximage.Picture);
+                
+                box.imageBoxes.Source = imagefromdb;
+            }
+            else
+            {
+                box.imageBoxes.Source = null;
             }
         }
 

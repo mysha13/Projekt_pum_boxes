@@ -20,6 +20,8 @@ namespace boxitem
     public partial class FindItem : Window
     {
         CurrentInfo currentuser = new CurrentInfo();
+        BD.BoxesEntities database = new BD.BoxesEntities();
+
         public FindItem()
         {
             InitializeComponent();
@@ -29,15 +31,15 @@ namespace boxitem
         {
             this.Close();
         }
-
        
         private void btnSerachFindItem_Click(object sender, RoutedEventArgs e)
         {           
             string search_name = tbNameFindItem.Text.Trim();
 
-            BD.BoxesEntities dbdb = new BD.BoxesEntities();
-            var allbox = (from stu in dbdb.Items
-                          join m in dbdb.Boxes 
+            List<BD.Item> allbox = new List<BD.Item>();
+
+            allbox = (from stu in database.Items
+                          join m in database.Boxes 
                           on stu.BoxId equals m.BoxID
                           where stu.Name == search_name
                           select stu).ToList();
@@ -50,21 +52,17 @@ namespace boxitem
             {
                 MessageBox.Show("Taki przedmiot nie istnieje. Sprawdź pisownie.");
             }
-
-            
         }
 
         private void btnGotoFindItem_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                object item = datagridBoxesListFindItem.SelectedItem;
-                string IDitem = (datagridBoxesListFindItem.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
-                int ID = int.Parse(IDitem);
+                int ID = GetSelectedItemId();
 
                 currentuser.BoxID = ID;
                 //MessageBox.Show(currentbox.UserID.ToString());  
-                Items items = new Items(currentuser.BoxID);
+                Items items = new Items();
                 items.Show();
                 this.Close();
             }
@@ -72,6 +70,14 @@ namespace boxitem
             {
                 MessageBox.Show("Nie wybrano żadnego pudełka.");
             }
+        }
+
+        public int GetSelectedItemId()
+        {
+            object item = datagridBoxesListFindItem.SelectedItem;
+            string IDitem = (datagridBoxesListFindItem.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
+            int currentID = int.Parse(IDitem);
+            return currentID;
         }
     }
 }

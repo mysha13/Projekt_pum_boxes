@@ -20,63 +20,61 @@ namespace boxitem
     public partial class BoxesList : Window
     {
         CurrentInfo currentitem = new CurrentInfo();
+        BD.BoxesEntities database = new BD.BoxesEntities();
 
         public BoxesList()
         {
             InitializeComponent();
-
             DisplayBoxes(currentitem.UserID);
-
         }
 
         private void DisplayBoxes(int id)
         {
-            using (var bb = new BD.BoxesEntities())
-            {
-                var boxes = bb.Boxes
-                    .ToList()
-                    .Where(x => x.UserId == id)
-                    .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description, x.BoxID))
-                    .ToList();
+            var boxes = database.Boxes
+                .ToList()
+                .Where(x => x.UserId == id)
+                .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description, x.BoxID))
+                .ToList();
 
-                datagridBoxesList.ItemsSource = boxes;
-                
-                bb.SaveChanges();
-
-            }
+            datagridBoxesList.ItemsSource = boxes;
+            database.SaveChanges();
         }
 
-        private void btnOkBoxesList_Click(object sender, RoutedEventArgs e)
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void AddItemToAnotherBox()
+        {
+            int currentitemId = GetSelectedItemId();
+            AddAndSaveItemToAnotherBox(currentitemId);
+        }
+
+        private int GetSelectedItemId()
+        {
+            object item = datagridBoxesList.SelectedItem;
+            string ID = (datagridBoxesList.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
+            int currentID = int.Parse(ID);
+            return currentID;
+        }
+
+        private void btnChooseBoxesList_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                object item = datagridBoxesList.SelectedItem;
-                string ID = (datagridBoxesList.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
-                int IID = int.Parse(ID);
+                AddItemToAnotherBox();
 
-                BD.BoxesEntities dbdb = new BD.BoxesEntities();
-                var updatebox = (from stu in dbdb.Items
-                                 where stu.ItemId == currentitem.ItemID
-                                 select stu).SingleOrDefault();
+                DBAction.DeleteData deletetransfer = new DBAction.DeleteData();
+                deletetransfer.DeleteWhileTransferItem(currentitem.ItemID);
+                //DeleteWhileTransferItem(currentitem.ItemID)
 
-                BD.Item newitem = new BD.Item
-                {
-                    Name = updatebox.Name.ToString(),
-                    Number = updatebox.Number,
-                    Description = updatebox.Description.ToString(),
-                    Picture = updatebox.Picture,
-                    BoxId = IID,
-                    Boxes = dbdb.Boxes.Single(x => x.BoxID == IID)
-                };
-                dbdb.Items.Add(newitem);
-                dbdb.SaveChanges();
+                //var old = (from o in database.Items
+                //           where o.ItemId == currentitem.ItemID
+                //           select o).FirstOrDefault();
 
-                var old = (from o in dbdb.Items
-                           where o.ItemId == currentitem.ItemID
-                           select o).FirstOrDefault();
-
-                dbdb.Items.Remove(old);
-                dbdb.SaveChanges();
+                //database.Items.Remove(old);
+                //database.SaveChanges();
                 MessageBox.Show("Przedmiot został przeniesiony");
                 this.Close();
             }
@@ -86,9 +84,22 @@ namespace boxitem
             }
         }
 
-        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        private void AddAndSaveItemToAnotherBox(int currentitemId)
         {
-            this.Close();
+            var updatebox = (from stu in database.Items
+                             where stu.ItemId == currentitem.ItemID
+                             select stu).SingleOrDefault();
+            BD.Item newitem = new BD.Item
+            {
+                Name = updatebox.Name.ToString(),
+                Number = updatebox.Number,
+                Description = updatebox.Description.ToString(),
+                Picture = updatebox.Picture,
+                BoxId = currentitemId,
+                Boxes = database.Boxes.Single(x => x.BoxID == currentitemId)
+            };
+            database.Items.Add(newitem);
+            database.SaveChanges();
         }
     }
 }

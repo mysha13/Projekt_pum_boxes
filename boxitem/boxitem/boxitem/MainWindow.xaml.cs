@@ -21,6 +21,7 @@ namespace boxitem
     public partial class MainWindow : Window
     {
         CurrentInfo currentuser = new CurrentInfo();
+        BD.BoxesEntities database = new BD.BoxesEntities();
 
         public MainWindow()
         {            
@@ -33,49 +34,14 @@ namespace boxitem
         }
        
         private void btnLoginLogin_Click(object sender, RoutedEventArgs e)
-        {           
-            using (var data = new BD.BoxesEntities())
+        {
+            try
             {
-                try
-                {
-                    IQueryable<BD.User> fituser =
-                        from u in data.Users
-                        where u.Login == tbLoginLogin.Text
-                        select u;
-
-                    int checkid = -1;
-                    foreach (var i in fituser)
-                    {
-                        if (tbPasswordLogin.Text == i.Password.Trim())
-                        {
-                            checkid = i.UserId;
-                            currentuser.USERLoginCurrent = i.Login;
-                            currentuser.USERNameCurrent = i.Name;
-                            currentuser.USERSurnameCurrent = i.Surname;
-                        }
-                    }
-                    if (checkid == -1)
-                    {
-                        MessageBox.Show("Błędne dane logowania \n Użytkownik nie istnieje");
-                    }
-                    else
-                    {
-                        currentuser.UserID = checkid; //int.Parse(uid.ToString())                        
-                        //MessageBox.Show(currentuser.UserId.ToString());
-                        OpenNextWindow();                        
-                    }
-                }
-                catch
-                {
-                    MessageBox.Show("Błędne dane logowania \n Użytkownik nie istnieje");
-                }
-                //currentuser.UserId = zmienna;
-
-                //var users = bb.Users
-                //    .ToList()
-                //    .Select(x => x.UserId == Id)
-                //    .Where(x => tbLoginLogin.Text==ViewModel.UserViewModel.Check(x.login,x.password))
-                //    .ToList();
+                GetAndSaveUserInfo();
+            }
+            catch
+            {
+                MessageBox.Show("Błędne dane logowania \n Użytkownik nie istnieje");
             }
         }
 
@@ -94,9 +60,44 @@ namespace boxitem
         private void OpenNextWindow ()
         {
             this.Hide();
-            View.Boxes boxes = new View.Boxes();//(currentuser.UserID);                              
+            View.Boxes boxes = new View.Boxes();                             
             boxes.ShowDialog();
             this.Close();
         }
+
+        private void CheckUsersInfo(int checkid)
+        {
+            if (checkid == -1)
+            {
+                MessageBox.Show("Błędne dane logowania \n Użytkownik nie istnieje");
+            }
+            else
+            {
+                currentuser.UserID = checkid;
+                OpenNextWindow();
+            }            
+        }
+
+        private void GetAndSaveUserInfo()
+        {
+            IQueryable<BD.User> fituser =
+                        from u in database.Users
+                        where u.Login == tbLoginLogin.Text
+                        select u;
+
+            int checkid = -1;
+            foreach (var user1 in fituser)
+            {
+                if (tbPasswordLogin.Text == user1.Password.Trim())
+                {
+                    checkid = user1.UserId;
+                    //currentuser.USERLoginCurrent = user1.Login;
+                    //currentuser.USERNameCurrent = user1.Name;
+                    //currentuser.USERSurnameCurrent = user1.Surname;
+                }
+            }
+            CheckUsersInfo(checkid);
+        }
+       
     }
 }

@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <DataGrid x:Name="datagridBoxesList" Margin="22,37,22,0" VerticalAlignment="Top" Height="187" RenderTransformOrigin="0.358,0.444" Grid.ColumnSpan="3" IsReadOnly="True"/>
         <Button x:Name="btnCancel" Content="Anuluj" HorizontalAlignment="Left" Margin="49.727,295,0,0" VerticalAlignment="Top" Width="96" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="1" Click="btnCancel_Click"/>
-        <Button x:Name="btnOkBoxesList" Content="OK" HorizontalAlignment="Left" Margin="49.727,245,0,0" VerticalAlignment="Top" Width="96" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="1" Click="btnOkBoxesList_Click"/>
+        <Button x:Name="btnChooseBoxesList" Content="Wybierz" HorizontalAlignment="Left" Margin="49.727,245,0,0" VerticalAlignment="Top" Width="96" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="1" Click="btnChooseBoxesList_Click"/>
 
     </Grid>
 </Window>

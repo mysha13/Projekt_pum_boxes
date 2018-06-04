@@ -17,15 +17,15 @@
         <Button x:Name="btnRefreshItems" Content="Odśwież" Margin="-1,24,152,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnRefreshItems_Click"/>
         <Button x:Name="btnCancelItems" Content="Anuluj" HorizontalAlignment="Left" Margin="103,379,0,0" VerticalAlignment="Top" Width="96" Height="34" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnCancelItems_Click"/>
         <Label Content="* Po każdej zmianie proszę nacisnąć przycisk 'Odśwież'" Margin="-1,388,102,7" FontFamily="Arial" FontSize="13" Grid.ColumnSpan="4"/>
-        <DataGrid x:Name="datagridItems" Margin="-1,65,0,0" VerticalAlignment="Top" Height="246" Grid.ColumnSpan="2" IsReadOnly="True"   />
+        <DataGrid x:Name="datagridItems" Margin="-1,65,0,0" VerticalAlignment="Top" Height="246" Grid.ColumnSpan="2" IsReadOnly="True" SelectionChanged="datagridItems_SelectionChanged"   />
         <Button x:Name="btnAddItems" Content="Dodaj" Margin="0,330,130,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnAddItems_Click"/>
         <Button x:Name="btnDeleteItems" Content="Usuń" Margin="134,330,0,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.ColumnSpan="2" Click="btnDeleteItems_Click"/>
         <Image x:Name="imageItems" HorizontalAlignment="Left" Height="161" Margin="20,65,0,0" VerticalAlignment="Top" Width="164" Grid.Column="3"/>
-        <Button x:Name="btnAddPhotoItems" Content="Dodaj" Margin="2,261,102,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnAddPhotoItems_Click"/>
-        <Button x:Name="btnDeletePhotoItems" Content="Usuń" Margin="108,261,10,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2" Click="btnDeletePhotoItems_Click"/>
-        <Button x:Name="btnMoveItems" Content="Przenieś" Margin="2,307,0,0" VerticalAlignment="Top" Height="45" FontSize="20" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnMoveItems_Click"/>
+        <Button x:Name="btnAddPhotoItems" Content="Dodaj" Margin="2,252,102,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnAddPhotoItems_Click"/>
+        <Button x:Name="btnDeletePhotoItems" Content="Usuń" Margin="108,252,10,0" VerticalAlignment="Top" Height="35" FontSize="16" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Grid.ColumnSpan="2" Click="btnDeletePhotoItems_Click"/>
+        <Button x:Name="btnMoveItems" Content="Przenieś przedmiot" Margin="2,307,0,0" VerticalAlignment="Top" Height="45" FontSize="20" FontFamily="Arial" FontWeight="Bold" Grid.Column="3" Click="btnMoveItems_Click"/>
         <Label Content="Podgląd zdjęcia" Margin="37,27,37,364" FontFamily="Arial" FontSize="16" Grid.Column="3" />
         <TextBox x:Name="tbFilePathItems" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="0,234,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="200" Grid.ColumnSpan="2" Visibility="Hidden"/>
-        <Button x:Name="btnShowItems" Content="Pokaż zdjęcie&#xD;przedmiotu" TextBlock.TextAlignment="Center" Margin="104,24,24,0" VerticalAlignment="Top" Height="35" FontFamily="Arial" Grid.ColumnSpan="3" Click="btnShowItems_Click"  />
+        <GroupBox x:Name="groupBox" Grid.ColumnSpan="3" Grid.Column="2" Header="Edycja zdjęć"  HorizontalAlignment="Center" Height="64" Margin="21,232,0,0" VerticalAlignment="Top" Width="216" BorderBrush="#FF3B91C5"/>
     </Grid>
 </Window>

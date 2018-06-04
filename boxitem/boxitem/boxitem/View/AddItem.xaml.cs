@@ -20,6 +20,8 @@ namespace boxitem
     public partial class AddItem : Window
     {
         CurrentInfo currentbox = new CurrentInfo();
+        BD.BoxesEntities database = new BD.BoxesEntities();
+
         public AddItem()
         {
             InitializeComponent();
@@ -32,36 +34,37 @@ namespace boxitem
 
         private void btnOkAddItem_Click(object sender, RoutedEventArgs e)
         {
-            using (var database = new BD.BoxesEntities())
+             //int idbox = currentbox.BoxID;
+             //var items = database.Boxes
+             //       .ToList()
+             //       .Where(x => x.BoxID == idbox)
+             //       .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description))
+             //       .ToList();
+            try
             {
-                int idbox = currentbox.BoxID;
-
-                var items = database.Boxes
-                    .ToList()
-                    .Where(x => x.BoxID == idbox)
-                    .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description))
-                    .ToList();
-                try
-                {
-                    BD.Item newitem = new BD.Item
-                    {
-                        Name = tbNameAddItem.Text.Trim(),
-                        Number = int.Parse(tbNumberAddItem.Text),
-                        Description = tbDescriptionAddItem.Text.Trim(),
-                        BoxId = currentbox.BoxID,
-                        Boxes = database.Boxes.Single(x => x.BoxID == idbox)                 
-                    };
-
-                    database.Items.Add(newitem);
-                    database.SaveChanges();
-                    this.Close();
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Błędne dane. Pole 'Liczba rzeczy' musi być liczbą!");
-                }
-                
+                AddAndSaveNewItem();
             }
+            catch (Exception)
+            {
+                MessageBox.Show("Błędne dane. Pole 'Liczba rzeczy' musi być liczbą!");
+                tbNumberAddItem.Clear();
+            }
+               
+        }
+
+        private void AddAndSaveNewItem()
+        {
+            BD.Item newitem = new BD.Item
+            {
+                Name = tbNameAddItem.Text.Trim(),
+                Number = int.Parse(tbNumberAddItem.Text),
+                Description = tbDescriptionAddItem.Text.Trim(),
+                BoxId = currentbox.BoxID,
+                Boxes = database.Boxes.Single(x => x.BoxID == currentbox.BoxID)
+            };
+            database.Items.Add(newitem);
+            database.SaveChanges();
+            this.Close();
         }
     }
 }

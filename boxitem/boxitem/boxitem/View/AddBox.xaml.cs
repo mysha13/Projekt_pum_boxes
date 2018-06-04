@@ -20,11 +20,11 @@ namespace boxitem
     public partial class AddBox : Window
     {
         CurrentInfo currentuser = new CurrentInfo();
-        
+        BD.BoxesEntities database = new BD.BoxesEntities();
+
         public AddBox()
         {
-            InitializeComponent();           
-            
+            InitializeComponent();  
         }
 
         private void btnCancelAddIBox_Click(object sender, RoutedEventArgs e)
@@ -34,30 +34,33 @@ namespace boxitem
 
         private void btnOkAddBox_Click(object sender, RoutedEventArgs e)
         {
-            using (var database = new BD.BoxesEntities())
+            int iduser = currentuser.UserID;
+            try
             {
-                int iduser = currentuser.UserID;
-                try
-                {
-                    BD.Box newbox = new BD.Box
-                    {
-                        Name = tbNameAddBox.Text.Trim(),
-                        Number = int.Parse(tbNumberAddBox.Text),
-                        Description = tbDescriptionAddBox.Text.Trim(),
-                        UserId = iduser,
-                        Users = database.Users.Single(x => x.UserId == iduser)
-
-                    };
-                    database.Boxes.Add(newbox);
-                    database.SaveChanges();
-                    this.Close();
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Blędne dane! Kod pudełka musi być liczbą!");
-                }  
-               
+                AddAndSaveNewBox(iduser);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Blędne dane! Kod pudełka musi być liczbą!");
+                tbNumberAddBox.Clear();
             }
         }
+
+        private void AddAndSaveNewBox(int iduser)
+        {
+            BD.Box newbox = new BD.Box
+            {
+                Name = tbNameAddBox.Text.Trim(),
+                Number = int.Parse(tbNumberAddBox.Text),
+                Description = tbDescriptionAddBox.Text.Trim(),
+                UserId = iduser,
+                Users = database.Users.Single(x => x.UserId == iduser)
+
+            };
+            database.Boxes.Add(newbox);
+            database.SaveChanges();
+            this.Close();
+        }
+        
     }
 }

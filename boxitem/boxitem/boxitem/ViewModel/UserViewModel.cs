@@ -32,14 +32,19 @@ namespace boxitem.ViewModel
             this.Name = name;
             this.Surname = surname;
         }
+
+        public UserViewModel(string login)
+        {
+            this.Login = login;           
+        }
         public static UserViewModel Create(string login, string password, string name, string surname, int id)
         {
             return new UserViewModel(name, password, name,surname,id);
         }
        
-        public static UserViewModel Create(string login, string password,int id)
+        public static UserViewModel Create(string login)
         {
-            return null;// login;
+            return new UserViewModel(login);
         }
         public static UserViewModel Create(string login, string password, string name, string surname)
         {

@@ -20,8 +20,8 @@ namespace boxitem
     public partial class AddBox : Window
     {
         CurrentInfo currentuser = new CurrentInfo();
-        BD.BoxesEntities database = new BD.BoxesEntities();
-
+        //BD.BoxesEntities database = new BD.BoxesEntities();
+        
         public AddBox()
         {
             InitializeComponent();  
@@ -37,30 +37,15 @@ namespace boxitem
             int iduser = currentuser.UserID;
             try
             {
-                AddAndSaveNewBox(iduser);
+                DBAction.AddData addbox = new DBAction.AddData();
+                addbox.AddBox(iduser, int.Parse(tbNumberAddBox.Text), tbNameAddBox.Text.Trim(), tbDescriptionAddBox.Text.Trim());
+                this.Close();
             }
             catch (Exception)
             {
                 MessageBox.Show("Blędne dane! Kod pudełka musi być liczbą!");
                 tbNumberAddBox.Clear();
             }
-        }
-
-        private void AddAndSaveNewBox(int iduser)
-        {
-            BD.Box newbox = new BD.Box
-            {
-                Name = tbNameAddBox.Text.Trim(),
-                Number = int.Parse(tbNumberAddBox.Text),
-                Description = tbDescriptionAddBox.Text.Trim(),
-                UserId = iduser,
-                Users = database.Users.Single(x => x.UserId == iduser)
-
-            };
-            database.Boxes.Add(newbox);
-            database.SaveChanges();
-            this.Close();
-        }
-        
+        }        
     }
 }

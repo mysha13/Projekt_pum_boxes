@@ -33,11 +33,9 @@ namespace boxitem
 
         private void btnVerifyAndRemindRemindPassword_Click(object sender, RoutedEventArgs e)
         {
-            IQueryable<BD.User> fituser =
-                   from u in database.Users
-                   where u.Login == tbLoginRemindPassword.Text && u.Name == tbNameRemindPassword.Text && u.Surname == tbSurnameRemindPassword.Text
-                   select u;
-
+            DBAction.GetData getuserdata = new DBAction.GetData();
+            IQueryable<BD.User> fituser = getuserdata.RemindPassword(tbLoginRemindPassword.Text, tbNameRemindPassword.Text, tbSurnameRemindPassword.Text);
+            
             if (fituser.Count() > 0)
             {
                 foreach (var i in fituser)

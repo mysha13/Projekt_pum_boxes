@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace boxitem.DBAction
 {
@@ -24,7 +25,8 @@ namespace boxitem.DBAction
 
         public void DeleteItem(int currentitemID)
         {
-            var deleteitem = (from stu in database.Items
+            BD.Item deleteitem = new BD.Item();
+            deleteitem = (from stu in database.Items
                               where stu.ItemId == currentitemID
                               select stu).SingleOrDefault();
 
@@ -32,34 +34,51 @@ namespace boxitem.DBAction
             database.SaveChanges();
         }
 
-        public void DeleteItemPhoto(int currentitemID)
+        public Byte[] DeleteItemPhoto(int currentitemID)
         {
             var currentitemimage = (from stu in database.Items
                                 where stu.ItemId == currentitemID
                                 select stu).SingleOrDefault();
 
-            if (currentitemimage.Picture != null)
+            if (currentitemimage.Picture == null)
+            {
+                MessageBox.Show("Przedmiot nie posiada zdjęcia!");
+            }
+            else
             {
                 currentitemimage.Picture = null;
-                Items item = new Items();
-                item.imageItems.Source = null;
                 database.SaveChanges();
             }
+            return currentitemimage.Picture;
+               
+            
+
         }
 
-        public void DeleteBoxPhoto(int currentboxID)
+        public Byte[] DeleteBoxPhoto(int currentboxID)
         {
             var currentboximage = (from box in database.Boxes
                                    where box.BoxID == currentboxID
                                    select box).SingleOrDefault();
 
-            if (currentboximage.Picture != null)
+            if (currentboximage.Picture == null)
+            {
+                MessageBox.Show("Pudełko nie posiada zdjęcia!");
+            }
+            else
             {
                 currentboximage.Picture = null;
-                View.Boxes box = new View.Boxes();                
-                box.imageBoxes.Source = null;
-                database.SaveChanges();
+                database.SaveChanges();               
             }
+            return currentboximage.Picture;
+
+            //if (currentboximage.Picture != null)
+            //{
+            //    currentboximage.Picture = null;
+            //    View.Boxes box = new View.Boxes();                
+            //    box.imageBoxes.Source = null;
+            //    database.SaveChanges();
+            //}
         }
 
         public void DeleteWhileTransferItem(int currentitem)

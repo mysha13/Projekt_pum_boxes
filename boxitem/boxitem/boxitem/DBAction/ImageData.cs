@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace boxitem.DBAction
 {
     class ImageData
     {
+        View.Boxes boxes = new View.Boxes();
+
         public static BitmapImage LoadImage(byte[] imageData)
         {
             if (imageData == null || imageData.Length == 0) return null;
@@ -56,6 +59,22 @@ namespace boxitem.DBAction
                 stream.Dispose();
             }
             return image;
+        }
+
+        public  void OpenFileDialogBoxes()
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "All supported graphics|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                boxes.tbFilePathBoxes.Text = op.FileName;
+                boxes.imageBoxes.Source = new BitmapImage(new Uri(op.FileName));
+
+            }
+
         }
     }
 }

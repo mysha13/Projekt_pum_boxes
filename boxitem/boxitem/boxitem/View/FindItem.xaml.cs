@@ -37,13 +37,9 @@ namespace boxitem
             string search_name = tbNameFindItem.Text.Trim();
 
             List<BD.Item> allbox = new List<BD.Item>();
-
-            allbox = (from stu in database.Items
-                          join m in database.Boxes 
-                          on stu.BoxId equals m.BoxID
-                          where stu.Name == search_name
-                          select stu).ToList();
-
+            DBAction.GetData finditem = new DBAction.GetData();
+            allbox = finditem.FindItem(search_name);
+            
             if (allbox.Count()>0)
             {
                 datagridBoxesListFindItem.ItemsSource = allbox;

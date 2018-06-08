@@ -28,29 +28,27 @@ namespace boxitem
         public Items()
         {
             InitializeComponent();
-            DisplayItems(currentinfo.BoxID);
+            DisplayItemsFromBox(currentinfo.BoxID);
 
         }
 
-        private void DisplayItems(int boxid)
+        private void DisplayItemsFromBox(int boxid)
         {
-            var allitems = database.Items
-                .ToList()
-                .Where(x => x.BoxId == currentinfo.BoxID)
-                .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description, x.ItemId))
-                .ToList();
+            //List<ViewModel.ItemViewModel> allitems = new List<ViewModel.ItemViewModel>();
+            DBAction.GetData getallitems = new DBAction.GetData();
 
-            datagridItems.ItemsSource = allitems;
-        }
-        
-        private void btnCancelItems_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            //allitems = database.Items
+            //    .ToList()
+            //    .Where(x => x.BoxId == currentinfo.BoxID)
+            //    .Select(x => ViewModel.ItemViewModel.Create(x.Name, x.Number, x.Description, x.ItemId))
+            //    .ToList();
+
+            datagridItems.ItemsSource = getallitems.DisplayItems(currentinfo.BoxID);
         }
         
         private void btnRefreshItems_Click(object sender, RoutedEventArgs e)
         {
-            DisplayItems(currentinfo.BoxID);
+            DisplayItemsFromBox(currentinfo.BoxID);
         }
                  
         //private void btnShowItems_Click(object sender, RoutedEventArgs e)
@@ -92,7 +90,18 @@ namespace boxitem
         {
             try
             {
-                CheckIfSelected();
+                var row_list = GetDataGridRows(datagridItems);
+
+                foreach (DataGridRow single_row in row_list)
+                {
+                    if (single_row.IsSelected == true)
+                    {
+                        int currentitemID = GetSelectedItemId();
+                        DBAction.GetData getphoto = new DBAction.GetData();
+                        byte[] photo = getphoto.GetItemPhoto(currentitemID);
+                        CheckIfPhotoExist(photo);                        
+                    }
+                }
             }
             catch { }
         }
@@ -108,98 +117,30 @@ namespace boxitem
             }
         }
 
-        private void CheckIfPictureExist(int currentitemID)
+        private void CheckIfPhotoExist(byte[] photo)
         {
-            DBAction.GetData showboximage = new DBAction.GetData();
-            showboximage.GetItemPhoto(currentitemID);
-
-            //var showboximage = (from stu in database.Items
-            //                    where stu.ItemId == currentitemID
-            //                    select stu).SingleOrDefault();
-
-            //if (showboximage.Picture != null)
-            //{
-            //    var imagefromdb = DBAction.ImageData.BitmapImageFromBytes(showboximage.Picture);
-            //    imageItems.Source = imagefromdb;
-            //}
-            //else
-            //{
-            //    imageItems.Source = null;
-            //}
-        }
-
-        private void CheckIfSelected()
-        {
-            var row_list = GetDataGridRows(datagridItems);
-
-            foreach (DataGridRow single_row in row_list)
+            if (photo != null)
             {
-                if (single_row.IsSelected == true)
-                {
-                    int currentitemID = GetSelectedItemId();
-                    CheckIfPictureExist(currentitemID);
-                }
+                var imagefromdb = DBAction.ImageData.BitmapImageFromBytes(photo);
+                imageItems.Source = imagefromdb;
+            }
+            else
+            {
+                imageItems.Source = null;
             }
         }
-
-        #region ImagesAction
-
-        //private static BitmapImage LoadImage(byte[] imageData)
-        //{
-        //    if (imageData == null || imageData.Length == 0) return null;
-        //    var image = new BitmapImage();
-        //    using (var mem = new MemoryStream(imageData))
-        //    {
-        //        mem.Position = 0;
-        //        image.BeginInit();
-        //        image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-        //        image.CacheOption = BitmapCacheOption.OnLoad;
-        //        image.UriSource = null;
-        //        image.StreamSource = mem;
-        //        image.EndInit();
-        //    }
-        //    image.Freeze();
-        //    return image;
-        //}
-
-        //public static BitmapImage BitmapImageFromBytes(byte[] bytes)
-        //{
-        //    BitmapImage image = null;
-        //    MemoryStream stream = null;
-        //    try
-        //    {
-        //        stream = new MemoryStream(bytes);
-        //        stream.Seek(0, SeekOrigin.Begin);
-        //        System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-        //        image = new BitmapImage();
-        //        image.BeginInit();
-        //        MemoryStream ms = new MemoryStream();
-        //        img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-        //        ms.Seek(0, SeekOrigin.Begin);
-        //        image.StreamSource = ms;
-        //        image.StreamSource.Seek(0, SeekOrigin.Begin);
-        //        image.EndInit();
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        stream.Close();
-        //        stream.Dispose();
-        //    }
-        //    return image;
-        //}
-
-        #endregion
-
+        
         #region NextWindows
 
         private void btnAddItems_Click(object sender, RoutedEventArgs e)
         {
             AddItem additem = new AddItem();
             additem.Show();
+        }
+
+        private void btnCancelItems_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         #endregion
@@ -217,14 +158,7 @@ namespace boxitem
                 {
                     DBAction.DeleteData deleteitem = new DBAction.DeleteData();
                     deleteitem.DeleteItem(currentitemID);
-
-                    //var deleteitem = (from stu in database.Items
-                    //                  where stu.ItemId == currentitemID
-                    //                  select stu).SingleOrDefault();
-
-                    //database.Items.Remove(deleteitem);
-                    //database.SaveChanges();
-                    DisplayItems(currentinfo.BoxID);
+                    DisplayItemsFromBox(currentinfo.BoxID);
                 }
             }
             catch
@@ -252,7 +186,7 @@ namespace boxitem
 
         #region ActionOnPhoto
 
-        private void OFileDialog()
+        private void OpenFileDialog()
         {
             OpenFileDialog op = new OpenFileDialog();
             op.Title = "Select a picture";
@@ -273,26 +207,33 @@ namespace boxitem
                 int currentitemID = GetSelectedItemId();
                 currentinfo.ItemID = currentitemID;
 
-                OFileDialog();
-                FileStream Stream = new FileStream(tbFilePathItems.Text, FileMode.Open, FileAccess.Read);
-                StreamReader Reader = new StreamReader(Stream);
-                Byte[] ImgData = new Byte[Stream.Length - 1];
-                Stream.Read(ImgData, 0, (int)Stream.Length - 1);
-
-
-                var nowe = (from stu in database.Items
-                            where stu.ItemId == currentitemID
-                            select stu).SingleOrDefault();
-
-                nowe.Picture = ImgData;
-                database.SaveChanges();
-
-                imageItems.Source = DBAction.ImageData.LoadImage(ImgData);
+                OpenFileDialog();
+                GetAndSaveItemPhoto(currentitemID);
+                
             }
             catch (Exception)
             {
                 MessageBox.Show("Nie wybrano przedmiotu!");
             }
+        }
+
+        private void  GetAndSaveItemPhoto(int currentitemID)
+        {
+            FileStream Stream = new FileStream(tbFilePathItems.Text, FileMode.Open, FileAccess.Read);
+            StreamReader Reader = new StreamReader(Stream);
+            Byte[] ImgData = new Byte[Stream.Length - 1];
+            Stream.Read(ImgData, 0, (int)Stream.Length - 1);
+
+            DBAction.AddData addphoto = new DBAction.AddData();
+            addphoto.SaveItemPhoto(ImgData);
+
+            this.Hide();
+            Items showagain = new Items();
+            showagain.ShowDialog();
+            this.Close();
+
+            var image = DBAction.ImageData.LoadImage(ImgData);
+            imageItems.Source = image;
         }
 
         private void btnDeletePhotoItems_Click(object sender, RoutedEventArgs e)
@@ -307,8 +248,11 @@ namespace boxitem
                     //                    where stu.ItemId == currentitemID
                     //                    select stu).SingleOrDefault();
                     DBAction.DeleteData deletecurrentimage = new DBAction.DeleteData();
-                    deletecurrentimage.DeleteItemPhoto(currentitemID);
+                    byte[] photo = deletecurrentimage.DeleteItemPhoto(currentitemID);
                     
+                    //Items item = new Items();
+                    imageItems.Source = null;
+
                 }
             }
             catch (Exception)

@@ -24,62 +24,34 @@ namespace boxitem.View
     public partial class Boxes : Window
     {
         CurrentInfo currentuser = new CurrentInfo();
-        //CurrentInfo currentbox = new CurrentInfo();
         BD.BoxesEntities database = new BD.BoxesEntities();
 
         public Boxes()
         {
             InitializeComponent();
-            DisplayBoxes(currentuser.UserID);
+            DisplayBoxesFromUser(currentuser.UserID);
         }
 
-        public void DisplayBoxes(int iduser)
+        public void DisplayBoxesFromUser(int iduser)
         {
-            var boxes = database.Boxes
-                .ToList()
-                .Where(x => x.UserId == iduser)
-                .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description, x.BoxID))
-                .ToList();
+            //var boxes = database.Boxes
+            //    .ToList()
+            //    .Where(x => x.UserId == iduser)
+            //    .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description, x.BoxID))
+            //    .ToList();
 
-            datagridBoxes.ItemsSource = boxes;    
-        }
-
-        private void btnCancelBoxes_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            //List<ViewModel.BoxViewModel> boxes = new List<ViewModel.BoxViewModel>();
+            
+            DBAction.GetData getallboxes = new DBAction.GetData();
+            //boxes=getallboxes.DispalyBoxes(iduser);
+            datagridBoxes.ItemsSource = getallboxes.DispalyBoxes(iduser); //boxes;    
         }
         
         private void btnRefreshBoxes_Click(object sender, RoutedEventArgs e)
         {
-            DisplayBoxes(currentuser.UserID);
+            DisplayBoxesFromUser(currentuser.UserID);
         }
-        
-        //private void btnShowBoxes_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        int currentboxID = GetSelectedItemId();
-
-        //        var currentimage = (from stu in database.Boxes
-        //                            where stu.BoxID == currentboxID
-        //                            select stu).SingleOrDefault();
-
-        //        if (currentimage.Picture != null)
-        //        {
-        //            var imagefromdb = BitmapImageFromBytes(currentimage.Picture);
-        //            imageBoxes.Source = imagefromdb;
-        //        }
-        //        else
-        //        {
-        //            imageBoxes.Source = null;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MessageBox.Show("Nie wybrano pudełka.");
-        //    }            
-        //}
-        
+                
         private void datagridBoxes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //try
@@ -92,22 +64,15 @@ namespace boxitem.View
                     {
                         int currentboxID = GetSelectedItemId();
 
-                        ShowBoxPhoto(currentboxID);
-                        //var showboximage = (from stu in database.Boxes
-                        //                    where stu.BoxID == currentboxID
-                        //                    select stu).SingleOrDefault();
+                    //ShowBoxPhoto(currentboxID);
+                    DBAction.GetData getphoto = new DBAction.GetData();
 
-                        //if (showboximage.Picture != null)
-                        //{
-                        //    var imagefromdb = BitmapImageFromBytes(showboximage.Picture);
-                        //    imageBoxes.Source = imagefromdb;
-                        //}
-                        //else
-                        //{
-                        //    imageBoxes.Source = null;
-                        //}
-                    }
+                    byte[] photo=getphoto.GetAndShowBoxPhoto(currentboxID);
+
+                    CheckIfPhotoExist(photo);
+                    
                 }
+            }
             //}
             //catch { }
         }
@@ -130,59 +95,20 @@ namespace boxitem.View
             int currentID = int.Parse(ID);
             return currentID;
         }
-        
-        #region ImagesAction
 
-        //private static BitmapImage LoadImage(byte[] imageData)
-        //{
-        //    if (imageData == null || imageData.Length == 0) return null;
-        //    var image = new BitmapImage();
-        //    using (var mem = new MemoryStream(imageData))
-        //    {
-        //        mem.Position = 0;
-        //        image.BeginInit();
-        //        image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-        //        image.CacheOption = BitmapCacheOption.OnLoad;
-        //        image.UriSource = null;
-        //        image.StreamSource = mem;
-        //        image.EndInit();
-        //    }
-        //    image.Freeze();
-        //    return image;
-        //}
-
-        //private static BitmapImage BitmapImageFromBytes(byte[] bytes)
-        //{
-        //    BitmapImage image = null;
-        //    MemoryStream stream = null;
-        //    try
-        //    {
-        //        stream = new MemoryStream(bytes);
-        //        stream.Seek(0, SeekOrigin.Begin);
-        //        System.Drawing.Image img = System.Drawing.Image.FromStream(stream);
-        //        image = new BitmapImage();
-        //        image.BeginInit();
-        //        MemoryStream ms = new MemoryStream();
-        //        img.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-        //        ms.Seek(0, SeekOrigin.Begin);
-        //        image.StreamSource = ms;
-        //        image.StreamSource.Seek(0, SeekOrigin.Begin);
-        //        image.EndInit();
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //    finally
-        //    {
-        //        stream.Close();
-        //        stream.Dispose();
-        //    }
-        //    return image;
-        //}
-
-        #endregion
-
+        private void CheckIfPhotoExist(byte[] photo)
+        {
+            if (photo != null)
+            {
+                var imagefromdb = DBAction.ImageData.BitmapImageFromBytes(photo);
+                imageBoxes.Source = imagefromdb;
+            }
+            else
+            {
+                imageBoxes.Source = null;
+            }
+        }
+                
         #region NextWindows
 
         private void btnFindItem_Click(object sender, RoutedEventArgs e)
@@ -195,6 +121,11 @@ namespace boxitem.View
         {
             AddBox addbox = new AddBox();
             addbox.Show();
+        }
+
+        private void btnCancelBoxes_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         #endregion
@@ -224,16 +155,11 @@ namespace boxitem.View
 
                 if (MessageBox.Show("Na pewno chcesz usunąć pudełko z całą zawartością?", "Usuwanie",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-
                 {
-                    DeleteCurrentBox(currentboxID);
-                    //var deletebox = (from stu in database.Boxes
-                    //                 where stu.BoxID == currentboxID
-                    //                 select stu).SingleOrDefault();
-
-                    //database.Boxes.Remove(deletebox);
-                    //database.SaveChanges();
-                    //DisplayBoxes(currentuser.UserID);
+                    DBAction.DeleteData deletebox = new DBAction.DeleteData();
+                    deletebox.DeleteBox(currentboxID);
+                    DisplayBoxesFromUser(currentuser.UserID);
+                    //DeleteCurrentBox(currentboxID);                    
                 }
             }
             catch (Exception)
@@ -242,20 +168,12 @@ namespace boxitem.View
             }
         }
 
-        public void DeleteCurrentBox(int currentboxID)
-        {
-            DBAction.DeleteData delete = new DBAction.DeleteData();
-            delete.DeleteBox(currentboxID);
-            
-            //BD.Box deletebox = new BD.Box();
-            // deletebox = (from stu in database.Boxes
-            //                 where stu.BoxID == currentboxID
-            //                 select stu).SingleOrDefault();
-
-            //database.Boxes.Remove(deletebox);
-            //database.SaveChanges();
-            DisplayBoxes(currentuser.UserID);
-        }
+        //public void DeleteCurrentBox(int currentboxID)
+        //{
+        //    DBAction.DeleteData delete = new DBAction.DeleteData();
+        //    delete.DeleteBox(currentboxID);            
+        //    DisplayBoxesFromUser(currentuser.UserID);
+        //}
 
         #endregion
 
@@ -272,16 +190,18 @@ namespace boxitem.View
                 {
                     //DeleteBoxPhoto(currentboxID);
                     DBAction.DeleteData deleteboxphoto = new DBAction.DeleteData();
-                    deleteboxphoto.DeleteBoxPhoto(currentboxID);
+                    byte[] photo=deleteboxphoto.DeleteBoxPhoto(currentboxID);
+
+
                     //var currentboximage = (from box in database.Boxes
                     //                       where box.BoxID == currentboxID
                     //                       select box).SingleOrDefault();
 
-                    //if (currentboximage.Picture != null)
+                    //if (photo != null)
                     //{
-                    //    currentboximage.Picture = null;
-                    //    imageBoxes.Source = null;
-                    //    database.SaveChanges();
+                        //photo = null;
+                        imageBoxes.Source = null;
+                        database.SaveChanges();
                     //}
                 }
             }
@@ -296,7 +216,7 @@ namespace boxitem.View
             try
             {
                 int currentboxID = GetSelectedItemId();
-
+                currentuser.BoxID = currentboxID;
                 OpenFileDialog();
 
                 GetAndSavePhoto(currentboxID);
@@ -357,33 +277,36 @@ namespace boxitem.View
             StreamReader Reader = new StreamReader(Stream);
             Byte[] ImgData = new Byte[Stream.Length - 1];
             Stream.Read(ImgData, 0, (int)Stream.Length - 1);
+            
+            DBAction.AddData addphoto = new DBAction.AddData();
+            addphoto.SaveBoxPhoto(ImgData);
 
-            var box = (from b in database.Boxes
-                       where b.BoxID == currentboxID
-                       select b).SingleOrDefault();
-
-            box.Picture = ImgData;
-            database.SaveChanges();
-
-            imageBoxes.Source = DBAction.ImageData.LoadImage(ImgData);
+            this.Hide();
+            View.Boxes showagain = new View.Boxes();
+            showagain.ShowDialog();
+            this.Close();
+            
+            var image= DBAction.ImageData.LoadImage(ImgData);
+            imageBoxes.Source = image;//DBAction.ImageData.LoadImage(ImgData);
         }
 
-        private void ShowBoxPhoto(int currentboxID)
-        {
-            var showboximage = (from stu in database.Boxes
-                                where stu.BoxID == currentboxID
-                                select stu).SingleOrDefault();
+        //private void ShowBoxPhoto(int currentboxID)
+        //{
 
-            if (showboximage.Picture != null)
-            {
-                var imagefromdb = DBAction.ImageData.BitmapImageFromBytes(showboximage.Picture);
-                imageBoxes.Source = imagefromdb;
-            }
-            else
-            {
-                imageBoxes.Source = null;
-            }
-        }
+        //    var showboximage = (from stu in database.Boxes
+        //                        where stu.BoxID == currentboxID
+        //                        select stu).SingleOrDefault();
+
+        //    if (showboximage.Picture != null)
+        //    {
+        //        var imagefromdb = DBAction.ImageData.BitmapImageFromBytes(showboximage.Picture);
+        //        imageBoxes.Source = imagefromdb;
+        //    }
+        //    else
+        //    {
+        //        imageBoxes.Source = null;
+        //    }
+        //}
         #endregion
     }
 }

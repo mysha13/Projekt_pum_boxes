@@ -35,41 +35,30 @@ namespace boxitem
 
         private void btnRegisterRegister_Click(object sender, RoutedEventArgs e)
         {
-            //using (var bb = new BD.BoxesEntities())
+            DBAction.AddData adduser = new DBAction.AddData();
+            adduser.AddUser(NameRegister.Text.Trim(), SurnameRegister.Text.Trim(), LoginRegister.Text.Trim(), PasswordRegister.Text.Trim());
+            
+            //var getallfitusers = from a in database.Users
+            //                     where a.Login == LoginRegister.Text
+            //                     select a;
+            //List<ViewModel.UserViewModel> getallfitusers = new List<ViewModel.UserViewModel>();
+            //DBAction.GetData getusers = new DBAction.GetData();
+            //getallfitusers = getusers.GetFitUsers(LoginRegister.Text);
+
+            //if (getallfitusers.Count() > 0)
             //{
-                var getallfitusers = from a in database.Users
-                            where a.Login == LoginRegister.Text
-                            select a;
-                
-                if ( getallfitusers.Count() > 0)
-                {
-                    MessageBox.Show("Podany login jest zajęty");
-                    //    LoginRegister.Clear();
-                }
-                else
-                {
-                AddNewUser();
-                }       
+            //    MessageBox.Show("Podany login jest zajęty");
+            //    //    LoginRegister.Clear();
+            //}
+            //else
+            //{
+            //    DBAction.AddData adduser = new DBAction.AddData();
+            //    adduser.AddUser(NameRegister.Text.Trim(), SurnameRegister.Text.Trim(), LoginRegister.Text.Trim(), PasswordRegister.Text.Trim());
+            //    this.Close();
+            //}       
 
             //}
         }
-        private void AddNewUser()
-        {
-            BD.User newuser = new BD.User
-            {
-                Name = NameRegister.Text.Trim(),
-                Surname = SurnameRegister.Text.Trim(),
-                Login = LoginRegister.Text.Trim(),
-                Password = PasswordRegister.Text.Trim()
-            };
-
-            database.Users.Add(newuser);
-            database.SaveChanges();
-
-            MessageBox.Show("Użytkownik '" + LoginRegister.Text + "' został dodany");
-            this.Close();
-        }
-
-
+       
     }
 }

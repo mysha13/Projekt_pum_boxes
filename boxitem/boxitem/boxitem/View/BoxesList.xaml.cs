@@ -28,27 +28,16 @@ namespace boxitem
             DisplayBoxes(currentitem.UserID);
         }
 
-        private void DisplayBoxes(int id)
+        private void DisplayBoxes(int iduser)
         {
-            var boxes = database.Boxes
-                .ToList()
-                .Where(x => x.UserId == id)
-                .Select(x => ViewModel.BoxViewModel.Create(x.Name, x.Number, x.Description, x.BoxID))
-                .ToList();
-
-            datagridBoxesList.ItemsSource = boxes;
-            database.SaveChanges();
+            DBAction.GetData getallboxes = new DBAction.GetData();
+            datagridBoxesList.ItemsSource = getallboxes.DispalyBoxes(iduser);
+            
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void AddItemToAnotherBox()
-        {
-            int currentitemId = GetSelectedItemId();
-            AddAndSaveItemToAnotherBox(currentitemId);
         }
 
         private int GetSelectedItemId()
@@ -63,18 +52,14 @@ namespace boxitem
         {
             try
             {
-                AddItemToAnotherBox();
+                currentitem.BoxID = GetSelectedItemId();
+
+                DBAction.AddData addcurrentitem = new DBAction.AddData();
+                addcurrentitem.AddItemWhileTransfer(currentitem.BoxID);
 
                 DBAction.DeleteData deletetransfer = new DBAction.DeleteData();
                 deletetransfer.DeleteWhileTransferItem(currentitem.ItemID);
-                //DeleteWhileTransferItem(currentitem.ItemID)
-
-                //var old = (from o in database.Items
-                //           where o.ItemId == currentitem.ItemID
-                //           select o).FirstOrDefault();
-
-                //database.Items.Remove(old);
-                //database.SaveChanges();
+                
                 MessageBox.Show("Przedmiot został przeniesiony");
                 this.Close();
             }
@@ -83,23 +68,6 @@ namespace boxitem
                 MessageBox.Show("Nie wybrano pudełka!");
             }
         }
-
-        private void AddAndSaveItemToAnotherBox(int currentitemId)
-        {
-            var updatebox = (from stu in database.Items
-                             where stu.ItemId == currentitem.ItemID
-                             select stu).SingleOrDefault();
-            BD.Item newitem = new BD.Item
-            {
-                Name = updatebox.Name.ToString(),
-                Number = updatebox.Number,
-                Description = updatebox.Description.ToString(),
-                Picture = updatebox.Picture,
-                BoxId = currentitemId,
-                Boxes = database.Boxes.Single(x => x.BoxID == currentitemId)
-            };
-            database.Items.Add(newitem);
-            database.SaveChanges();
-        }
+        
     }
 }
